@@ -43,7 +43,10 @@ namespace BusinessLogicWPF.View.Admin.UserControls
         {
             this.InitializeComponent();
             
-            this.ComboBoxZoneName.ItemsSource = DataHelper.ZoneAndDivisionModel.ZoneList;
+            if (DataHelper.ZoneAndDivisionModel != null && DataHelper.ZoneAndDivisionModel.ZoneList != null)
+            {
+                this.ComboBoxZoneName.ItemsSource = DataHelper.ZoneAndDivisionModel.ZoneList;
+            }
         }
 
         /// <summary>

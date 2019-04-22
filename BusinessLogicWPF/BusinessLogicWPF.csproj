@@ -320,11 +320,13 @@
     <Compile Include="ExtensionMethods\LinqExtensions.cs" />
     <Compile Include="GoogleCloudFireStoreLibrary\ConnectFireStore.cs" />
     <Compile Include="Domain\ComboBoxItemTemplateSelector.cs" />
+    <Compile Include="Helper\ConnectionStates.cs" />
     <Compile Include="Helper\DataHelper.cs" />
     <Compile Include="Helper\ErrorLabelHelper.cs" />
     <Compile Include="Helper\IndeterminateProgressDialog.xaml.cs">
       <DependentUpon>IndeterminateProgressDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helper\LocalSystemConnection.cs" />
     <Compile Include="Helper\PhoneAuthenticationHelper.cs" />
     <Compile Include="Helper\StaticDbContext.cs" />
     <Compile Include="Helper\ExtendedVisualTreeHelper.cs" />

@@ -10,7 +10,6 @@
 namespace BusinessLogicWPF.ViewModel.Admin
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
@@ -19,7 +18,6 @@ namespace BusinessLogicWPF.ViewModel.Admin
     using BusinessLogicWPF.Domain;
     using BusinessLogicWPF.GoogleCloudFireStoreLibrary;
     using BusinessLogicWPF.Helper;
-    using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Model.Json.Creation;
     using BusinessLogicWPF.Properties;
     using BusinessLogicWPF.View.Admin.UserControls;
