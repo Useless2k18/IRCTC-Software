@@ -269,11 +269,14 @@ namespace BusinessLogicWPF.GoogleCloudFireStoreLibrary
         /// The name.
         /// </param>
         /// <typeparam name="TEntity">
-        /// Entity maybe a class of Model
+        /// Entity maybe a model class
         /// </typeparam>
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if Argument Null Exception
+        /// </exception>
         public async Task AddOrUpdateCollectionDataAsync<TEntity>(
             [NotNull] TEntity entity,
             [NotNull] params string[] name)
@@ -294,6 +297,58 @@ namespace BusinessLogicWPF.GoogleCloudFireStoreLibrary
             if (documentReference != null)
             {
                 await documentReference.SetAsync(entity, SetOptions.MergeAll).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// The add or update collection data async.
+        /// </summary>
+        /// <param name="entity">
+        /// The entity.
+        /// </param>
+        /// <param name="options">
+        /// The options.
+        /// </param>
+        /// <param name="name">
+        /// The name.
+        /// </param>
+        /// <typeparam name="TEntity">
+        /// Entity maybe a Model Class
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown if Argument Null Exception
+        /// </exception>
+        public async Task AddOrUpdateCollectionDataAsync<TEntity>(
+            [NotNull] TEntity entity,
+            [NotNull] SetOptions options,
+            [NotNull] params string[] name)
+            where TEntity : class
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            var documentReference = fireStoreDb?.Document(GetDocumentPath(name));
+
+            if (documentReference != null)
+            {
+                if (options == null)
+                {
+                    await documentReference.SetAsync(entity, SetOptions.MergeAll).ConfigureAwait(false);
+                }
+                else
+                {
+                    await documentReference.SetAsync(entity, options).ConfigureAwait(false);
+                }
             }
         }
 
