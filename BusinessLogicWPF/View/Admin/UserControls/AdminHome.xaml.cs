@@ -13,6 +13,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.IO;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -53,6 +54,10 @@ namespace BusinessLogicWPF.View.Admin.UserControls
         /// </param>
         private void ButtonRefreshOnClick(object sender, RoutedEventArgs e)
         {
+            ButtonProgressAssist.SetIsIndeterminate(this.ButtonRefresh, true);
+            this.TextBlockWait.Visibility = Visibility.Visible;
+            this.ButtonRefresh.IsEnabled = false;
+            
             this.backgroundWorker = new BackgroundWorker();
             this.backgroundWorker.DoWork += this.BackgroundWorkerDoWork;
             this.backgroundWorker.RunWorkerCompleted += this.BackgroundWorkerRunWorkerCompleted;
@@ -76,20 +81,49 @@ namespace BusinessLogicWPF.View.Admin.UserControls
         /// <param name="e">
         /// The e.
         /// </param>
-        private async void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
-            this.Dispatcher.Invoke(() => ButtonProgressAssist.SetIsIndeterminate(this.ButtonRefresh, true));
+            var task1 = this.CreateZoneAndDivisionFileAsync();
+            var task2 = this.CreateStationListFileAsync();
 
-            #region Zone And Division
+            Task.WaitAll(task1, task2);
+        }
 
+        /// <summary>
+        /// The background worker run worker completed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            ButtonProgressAssist.SetIsIndeterminate(this.ButtonRefresh, false);
+            this.TextBlockWait.Visibility = Visibility.Collapsed;
+            this.ButtonRefresh.IsEnabled = true;
+            MessageBox.Show("Data Updated Successfully!");
+        }
+
+        /// <summary>
+        /// The create zone and division file async.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        private async Task CreateZoneAndDivisionFileAsync()
+        {
             var zoneAndDivisionModel =
                 StaticDbContext.ConnectFireStore.GetCollectionFields<ZoneAndDivision>("Root", "Employee");
 
             DataHelper.ZoneAndDivisionModel = zoneAndDivisionModel;
-            
+
             var jsonResult = JsonConvert.SerializeObject(zoneAndDivisionModel, Formatting.Indented);
 
-            var zoneAndDivisionFile = Path.Combine(DataHelper.JsonFolderPath, Properties.Resources.ZoneAndDivisionJson);
+            var zoneAndDivisionFile = Path.Combine(
+                DataHelper.JsonFolderPath,
+                Properties.Resources.ZoneAndDivisionJson);
 
             if (File.Exists(zoneAndDivisionFile))
             {
@@ -101,11 +135,16 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                 await streamWriter.WriteLineAsync(jsonResult).ConfigureAwait(false);
                 streamWriter.Close();
             }
+        }
 
-            #endregion
-
-            #region Stations
-
+        /// <summary>
+        /// The create station list file async.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        private async Task CreateStationListFileAsync()
+        {
             if (DataHelper.ZoneAndDivisionModel != null)
             {
                 var stationsList = new StationsList { Stations = new Dictionary<string, Station>() };
@@ -129,7 +168,8 @@ namespace BusinessLogicWPF.View.Admin.UserControls
 
                         foreach (var station in stations)
                         {
-                            stationsList.Stations.Add(new KeyValuePair<string, Station>(station.StationCode, station));
+                            stationsList.Stations.Add(
+                                new KeyValuePair<string, Station>(station.StationCode, station));
                         }
                     }
                 }
@@ -138,7 +178,9 @@ namespace BusinessLogicWPF.View.Admin.UserControls
 
                 var jsonResult2 = JsonConvert.SerializeObject(stationsList, Formatting.Indented);
 
-                var stationsJson = Path.Combine(DataHelper.JsonFolderPath, Properties.Resources.StationsListJson);
+                var stationsJson = Path.Combine(
+                    DataHelper.JsonFolderPath,
+                    Properties.Resources.StationsListJson);
 
                 if (File.Exists(stationsJson))
                 {
@@ -151,22 +193,6 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                     streamWriter.Close();
                 }
             }
-
-            #endregion
-        }
-
-        /// <summary>
-        /// The background worker run worker completed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            ButtonProgressAssist.SetIsIndeterminate(this.ButtonRefresh, false);
         }
     }
 }
