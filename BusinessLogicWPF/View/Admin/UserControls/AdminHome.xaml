@@ -8,9 +8,6 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-    UseLayoutRounding="True"
-    HorizontalAlignment="Center"
-    VerticalAlignment="Center"
     MinWidth="400"
     mc:Ignorable="d">
 
@@ -28,12 +25,12 @@
             Click="ButtonRefreshOnClick"
             materialDesign:ButtonProgressAssist.Value="-1"
             materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
-            MinHeight="100"
+            Height="100"
             HorizontalAlignment="Center">
             <StackPanel 
                 Orientation="Vertical"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Center">
+                VerticalAlignment="Stretch">
                 <materialDesign:PackIcon
                     Kind="Refresh"
                     Width="60"
@@ -46,5 +43,13 @@
                     Text="Refresh"/>
             </StackPanel>
         </Button>
+
+        <TextBlock
+            x:Name="TextBlockWait"
+            Text="Please Wait..."
+            Style="{StaticResource MaterialDesignDisplay1TextBlock}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Visibility="Collapsed"/>
     </Grid>
 </UserControl>
