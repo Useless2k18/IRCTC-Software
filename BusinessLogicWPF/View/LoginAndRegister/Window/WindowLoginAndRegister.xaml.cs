@@ -15,6 +15,7 @@ namespace BusinessLogicWPF.View.LoginAndRegister.Window
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
+    using System.Windows.Threading;
 
     using BusinessLogicWPF.Helper;
     using BusinessLogicWPF.Properties;
@@ -57,15 +58,15 @@ namespace BusinessLogicWPF.View.LoginAndRegister.Window
         /// </summary>
         public WindowLoginAndRegister()
         {
-            if (!CheckNet())
-            {
-                MessageBox.Show("Please connect system to Internet first!");
-                Application.Current.Shutdown(-1);
-            }
-
             this.InitializeComponent();
             this.Left = 100;
             this.Top = 10;
+
+            var timer = new DispatcherTimer(DispatcherPriority.Normal);
+            timer.Tick += this.TimerTick;
+            timer.Interval = new TimeSpan(0, 0, 1);
+            timer.Start();
+
             SystemEvents.DisplaySettingsChanged += this.SystemEventsDisplaySettingsChanged;
             this.DataContext = new LoginViewModel();
 
@@ -92,18 +93,23 @@ namespace BusinessLogicWPF.View.LoginAndRegister.Window
             #endregion
         }
 
-        [DllImport("wininet.dll")]
-        private static extern bool InternetGetConnectedState(out int description, int reservedValue);
-
         /// <summary>
-        /// The check net.
+        /// The timer tick.
         /// </summary>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        private static bool CheckNet()
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void TimerTick(object sender, EventArgs e)
         {
-            return InternetGetConnectedState(out var desc, 0);
+            if (!LocalSystemConnection.IsConnectedToInternet())
+            {
+                MessageBox.Show("Please connect system to Internet first!");
+                DataHelper.ExitCode = -1;
+                Application.Current.Shutdown(-1);
+            }
         }
 
         /// <summary>
