@@ -384,6 +384,10 @@ namespace BusinessLogicWPF.View.Admin.UserControls
         /// </param>
         private void ButtonNextOnClick(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show(
+                "Sorry, you cannot add Train Details now as the Route has some conflicts... Sorry for inconvenience");
+            return;
+            
             if (string.IsNullOrWhiteSpace(this.TextBoxTrainNo.Text)
                 || string.IsNullOrWhiteSpace(this.TextBoxTrainName.Text)
                 || string.IsNullOrWhiteSpace(this.TextBoxTrainType.Text)
