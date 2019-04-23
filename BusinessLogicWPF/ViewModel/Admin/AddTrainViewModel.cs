@@ -47,6 +47,11 @@ namespace BusinessLogicWPF.ViewModel.Admin
         private string destinationStation;
 
         /// <summary>
+        /// The duration.
+        /// </summary>
+        private string duration;
+
+        /// <summary>
         /// The rake zone.
         /// </summary>
         private string rakeZone;
@@ -106,6 +111,19 @@ namespace BusinessLogicWPF.ViewModel.Admin
         }
 
         /// <summary>
+        /// Gets or sets the duration.
+        /// </summary>
+        public string Duration
+        {
+            get => this.duration;
+            set
+            {
+                this.ValidateTrainDuration(value);
+                this.MutateVerbose(ref this.duration, value, this.RaisePropertyChanged());
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the rake zone.
         /// </summary>
         public string RakeZone
@@ -144,6 +162,31 @@ namespace BusinessLogicWPF.ViewModel.Admin
             if (regex.Match(value) == Match.Empty)
             {
                 throw new ArgumentException("Must be of 5 digits");
+            }
+        }
+
+        /// <summary>
+        /// The validate train duration.
+        /// </summary>
+        /// <param name="value">
+        /// The value.
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// Thrown if Argument Exception, string fails to validate
+        /// </exception>
+        private void ValidateTrainDuration(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return;
+            }
+
+            // regex that matches HH:MM format. Here HH is not limited to 24, it can pass more than 24, but MM is limited
+            var regexForTime = new Regex(@"^([0-9]?[0-9]):[0-5][0-9]$");
+            
+            if (regexForTime.Match(value) == Match.Empty)
+            {
+                throw new ArgumentException("Duration must be of format HH:MM");
             }
         }
     }
