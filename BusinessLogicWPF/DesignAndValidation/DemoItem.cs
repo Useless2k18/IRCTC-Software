@@ -7,13 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace BusinessLogicWPF.Domain
+namespace BusinessLogicWPF.DesignAndValidation
 {
     using System;
     using System.ComponentModel;
     using System.Windows;
     using System.Windows.Controls;
 
+    using BusinessLogicWPF.Domain;
     using BusinessLogicWPF.Properties;
 
     /// <summary>

@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace BusinessLogicWPF.Domain.TreeView
+namespace BusinessLogicWPF.DesignAndValidation.TreeView
 {
     using System.Collections.ObjectModel;
 

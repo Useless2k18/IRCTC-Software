@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:admin="clr-namespace:BusinessLogicWPF.ViewModel.Admin"
     xmlns:domain="clr-namespace:BusinessLogicWPF.Domain"
+    xmlns:designAndValidation="clr-namespace:BusinessLogicWPF.DesignAndValidation"
     Width="Auto"
     Height="Auto"
     MinHeight="430"
@@ -83,7 +84,7 @@
                         Path="StationCode"
                         UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                            <designAndValidation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -100,7 +101,7 @@
                         Path="StationName"
                         UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
-                            <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                            <designAndValidation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>
@@ -122,7 +123,7 @@
                         UpdateSourceTrigger="PropertyChanged"
                         ValidatesOnExceptions="True">
                         <Binding.ValidationRules>
-                            <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                            <designAndValidation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                         </Binding.ValidationRules>
                     </Binding>
                 </TextBox.Text>

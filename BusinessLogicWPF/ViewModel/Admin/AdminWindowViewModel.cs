@@ -15,6 +15,7 @@ namespace BusinessLogicWPF.ViewModel.Admin
     using System.IO;
     using System.Windows;
 
+    using BusinessLogicWPF.DesignAndValidation;
     using BusinessLogicWPF.Domain;
     using BusinessLogicWPF.GoogleCloudFireStoreLibrary;
     using BusinessLogicWPF.Helper;

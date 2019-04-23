@@ -306,20 +306,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Domain\AnotherCommandImplementation.cs" />
-    <Compile Include="Domain\DemoItem.cs" />
-    <Compile Include="Domain\IsCheckedValidationRule.cs" />
-    <Compile Include="Domain\NotEmptyValidationRule.cs" />
-    <Compile Include="Domain\NotifyPropertyChangedExtension.cs" />
-    <Compile Include="Domain\RelayCommand.cs" />
-    <Compile Include="Domain\SampleDialogViewModel.cs" />
-    <Compile Include="Domain\SelectableViewModel.cs" />
-    <Compile Include="Domain\SimpleDataTemplateSelector.cs" />
-    <Compile Include="Domain\SimpleDateValidationRule.cs" />
+    <Compile Include="DesignAndValidation\AnotherCommandImplementation.cs" />
+    <Compile Include="DesignAndValidation\DemoItem.cs" />
+    <Compile Include="DesignAndValidation\IsCheckedValidationRule.cs" />
+    <Compile Include="DesignAndValidation\NotEmptyValidationRule.cs" />
+    <Compile Include="DesignAndValidation\NotifyPropertyChangedExtension.cs" />
+    <Compile Include="DesignAndValidation\RelayCommand.cs" />
+    <Compile Include="DesignAndValidation\SampleDialogViewModel.cs" />
+    <Compile Include="DesignAndValidation\SelectableViewModel.cs" />
+    <Compile Include="DesignAndValidation\SimpleDataTemplateSelector.cs" />
+    <Compile Include="DesignAndValidation\SimpleDateValidationRule.cs" />
     <Compile Include="ExtensionMethods\GeneralPropertyComparer.cs" />
     <Compile Include="ExtensionMethods\LinqExtensions.cs" />
     <Compile Include="GoogleCloudFireStoreLibrary\ConnectFireStore.cs" />
-    <Compile Include="Domain\ComboBoxItemTemplateSelector.cs" />
+    <Compile Include="DesignAndValidation\ComboBoxItemTemplateSelector.cs" />
     <Compile Include="Helper\ConnectionStates.cs" />
     <Compile Include="Helper\DataHelper.cs" />
     <Compile Include="Helper\ErrorLabelHelper.cs" />
@@ -394,7 +394,7 @@
     <Compile Include="View\Admin\UserControls\ForHelpers\SelectCoachCategory.xaml.cs">
       <DependentUpon>SelectCoachCategory.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Domain\TreeView\MenuItem.cs" />
+    <Compile Include="DesignAndValidation\TreeView\MenuItem.cs" />
     <Compile Include="View\Admin\Window\AdminWindow.xaml.cs">
       <DependentUpon>AdminWindow.xaml</DependentUpon>
     </Compile>
@@ -605,6 +605,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Collections\" />
+    <Folder Include="UnitOfWork\" />
     <Folder Include="View\Home\UserControls\" />
   </ItemGroup>
   <ItemGroup>

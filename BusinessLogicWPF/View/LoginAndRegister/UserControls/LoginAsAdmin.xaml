@@ -10,6 +10,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:domain="clr-namespace:BusinessLogicWPF.Domain"
              xmlns:loginAndRegister="clr-namespace:BusinessLogicWPF.ViewModel.LoginAndRegister"
+             xmlns:designAndValidation="clr-namespace:BusinessLogicWPF.DesignAndValidation"
              Height="Auto" Width="Auto"
              d:DataContext="{d:DesignInstance loginAndRegister:LoginAsAdminViewModel, d:IsDesignTimeCreatable=False}">
 
@@ -53,7 +54,7 @@
                     LostKeyboardFocus="TextUserNameLostKeyboardFocus">
                         <Binding Path="Username" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
-                                <domain:NotEmptyValidationRule MaxCount="2" ValidatesOnTargetUpdated="True" />
+                                <designAndValidation:NotEmptyValidationRule MaxCount="2" ValidatesOnTargetUpdated="True" />
                             </Binding.ValidationRules>
                         </Binding>
                 </TextBox>
@@ -92,7 +93,7 @@
                     DataObject.Pasting="TextOtpOnPasting" MaxLength="6">
                         <Binding Path="Otp" UpdateSourceTrigger="PropertyChanged">
                             <Binding.ValidationRules>
-                                <domain:NotEmptyValidationRule MaxCount="2" ValidatesOnTargetUpdated="True" />
+                                <designAndValidation:NotEmptyValidationRule MaxCount="2" ValidatesOnTargetUpdated="True" />
                             </Binding.ValidationRules>
                         </Binding>
                 </TextBox>

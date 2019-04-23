@@ -33,7 +33,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
 
     using Properties;
 
-    using MenuItem = Domain.TreeView.MenuItem;
+    using MenuItem = BusinessLogicWPF.DesignAndValidation.TreeView.MenuItem;
 
     /// <summary>
     /// Interaction logic for AddTrains.XAML

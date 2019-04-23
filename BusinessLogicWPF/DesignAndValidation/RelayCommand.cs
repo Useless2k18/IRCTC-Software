@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace BusinessLogicWPF.Domain
+namespace BusinessLogicWPF.DesignAndValidation
 {
     using System;
     using System.Windows.Input;
@@ -35,7 +35,7 @@ namespace BusinessLogicWPF.Domain
 
         /// <inheritdoc />
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:BusinessLogicWPF.Domain.RelayCommand`1" /> class.
+        /// Initializes a new instance of the <see cref="T:BusinessLogicWPF.DesignAndValidation.RelayCommand`1" /> class.
         /// </summary>
         /// <param name="execute">
         /// The execute.

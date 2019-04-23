@@ -12,6 +12,7 @@ namespace BusinessLogicWPF.ViewModel.LoginAndRegister
     using System;
     using System.ComponentModel;
 
+    using BusinessLogicWPF.DesignAndValidation;
     using BusinessLogicWPF.Domain;
     using BusinessLogicWPF.Properties;
 

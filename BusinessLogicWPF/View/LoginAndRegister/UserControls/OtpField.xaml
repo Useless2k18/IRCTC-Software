@@ -9,6 +9,7 @@
              xmlns:domain="clr-namespace:BusinessLogicWPF.Domain"
              xmlns:json="clr-namespace:BusinessLogicWPF.Model.Json"
              xmlns:behavioral="clr-namespace:BusinessLogicWPF.Model.Json.Behavioral"
+             xmlns:designAndValidation="clr-namespace:BusinessLogicWPF.DesignAndValidation"
              mc:Ignorable="d" 
              Height="Auto" Width="Auto"
              d:DataContext="{d:DesignInstance loginAndRegister:OtpFieldViewModel, d:IsDesignTimeCreatable=False}">
@@ -49,7 +50,7 @@
                     <DataTemplate x:Key="DropDownTemplate" DataType="{x:Type behavioral:IsdCodes}">
                         <TextBlock Text="{Binding Path=LongDescription}"/>
                     </DataTemplate>
-                    <domain:ComboBoxItemTemplateSelector
+                    <designAndValidation:ComboBoxItemTemplateSelector
                         x:Key="ItemTemplateSelector"
                         SelectedTemplate="{StaticResource SelectedTemplate}"
                         DropDownTemplate="{StaticResource DropDownTemplate}"/>

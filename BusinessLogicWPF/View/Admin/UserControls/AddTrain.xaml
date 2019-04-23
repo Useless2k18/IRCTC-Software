@@ -9,8 +9,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:BusinessLogicWPF.Model"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-    xmlns:treeView="clr-namespace:BusinessLogicWPF.Domain.TreeView"
     xmlns:viewModel="clr-namespace:BusinessLogicWPF.ViewModel.Admin"
+    xmlns:designAndValidation="clr-namespace:BusinessLogicWPF.DesignAndValidation"
+    xmlns:treeView="clr-namespace:BusinessLogicWPF.DesignAndValidation.TreeView"
     Width="Auto"
     Height="Auto"
     mc:Ignorable="d"
@@ -73,7 +74,7 @@
                                 UpdateSourceTrigger="PropertyChanged"
                                 ValidatesOnExceptions="True">
                                 <Binding.ValidationRules>
-                                    <domain:NotEmptyValidationRule MaxCount="6" ValidatesOnTargetUpdated="True" />
+                                    <designAndValidation:NotEmptyValidationRule MaxCount="6" ValidatesOnTargetUpdated="True" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -89,7 +90,7 @@
                         <TextBox.Text>
                             <Binding Path="TrainName" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
-                                    <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                    <designAndValidation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -107,7 +108,7 @@
                                 Path="TrainType"
                                 UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
-                                    <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                    <designAndValidation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>
@@ -162,7 +163,7 @@
                         <TextBox.Text>
                             <Binding Path="RakeZone" UpdateSourceTrigger="PropertyChanged">
                                 <Binding.ValidationRules>
-                                    <domain:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                    <designAndValidation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
                                 </Binding.ValidationRules>
                             </Binding>
                         </TextBox.Text>

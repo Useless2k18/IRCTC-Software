@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace BusinessLogicWPF.Domain
+namespace BusinessLogicWPF.DesignAndValidation
 {
     using System;
     using System.Windows;
