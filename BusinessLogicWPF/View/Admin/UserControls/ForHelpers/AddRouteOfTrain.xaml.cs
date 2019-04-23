@@ -13,6 +13,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Threading;
@@ -199,24 +200,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
                 }
             }
 
-            MessageBox.Show("Congratulations! You have added a new Train into the Database");
-            if (DataHelper.Train != null)
-            {
-                if (MessageBox.Show(
-                        "Lets Confirm" 
-                        + $"\nTrain Number: {DataHelper.Train.TrainNumber}"
-                        + $"\nTrain Name: {DataHelper.Train.TrainName}"
-                        + $"\nTrain Type: {DataHelper.Train.Type}"
-                        + $"\nSource Station: {DataHelper.Train.SourceStation}"
-                        + $"\nDestination Station: {DataHelper.Train.DestinationStation}"
-                        + $"\nRake Zone: {DataHelper.Train.RakeZone}",
-                        "Confirm Message",
-                        MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
-                {
-                    MessageBox.Show("Ok... Data is not added");
-                    return;
-                }
-            }
+            ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, true);
 
             if (DataHelper.Train != null)
             {
@@ -247,17 +231,23 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
         /// </param>
         private void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
         {
-            if (DataHelper.Train != null)
-            {
-                StaticDbContext.ConnectFireStore?.AddOrUpdateCollectionDataAsync(
-                    DataHelper.Train,
-                    "Root",
-                    "TrainDetails",
-                    $"{GetIthDigitFromRightEnd(DataHelper.Train.TrainNumber, 5)}XXXX",
-                    $"Y{GetIthDigitFromRightEnd(DataHelper.Train.TrainNumber, 4)}XXX",
-                    "Trains",
-                    DataHelper.Train.TrainNumber.ToString());
-            }
+            var task = Task.Factory.StartNew(
+                () =>
+                    {
+                        if (DataHelper.Train != null)
+                        {
+                            StaticDbContext.ConnectFireStore?.AddOrUpdateCollectionDataAsync(
+                                DataHelper.Train,
+                                "Root",
+                                "TrainDetails",
+                                $"{GetIthDigitFromRightEnd(DataHelper.Train.TrainNumber, 5)}XXXX",
+                                $"Y{GetIthDigitFromRightEnd(DataHelper.Train.TrainNumber, 4)}XXX",
+                                "Trains",
+                                DataHelper.Train.TrainNumber.ToString());
+                        }
+                    });
+
+            Task.WaitAll(task);
         }
 
         /// <summary>
@@ -271,6 +261,31 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
         /// </param>
         private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, false);
+            MessageBox.Show("Congratulations! You have added a new Train into the Database");
+            if (DataHelper.Train != null)
+            {
+                if (MessageBox.Show(
+                        "Lets Confirm" 
+                        + $"\nTrain Number: {DataHelper.Train.TrainNumber}"
+                        + $"\nTrain Name: {DataHelper.Train.TrainName}"
+                        + $"\nTrain Type: {DataHelper.Train.Type}"
+                        + $"\nSource Station: {DataHelper.Train.SourceStation}"
+                        + $"\nDestination Station: {DataHelper.Train.DestinationStation}"
+                        + $"\nRake Zone: {DataHelper.Train.RakeZone}",
+                        "Confirm Message",
+                        MessageBoxButton.OKCancel) == MessageBoxResult.Cancel)
+                {
+                    MessageBox.Show("Ok... Data is not added");
+                    return;
+                }
+            }
+
+            if (DataHelper.Train != null)
+            {
+                DataHelper.Train.Route = this.routes.ToList();
+            }
+            
             this.Refresh();
 
             DataHelper.Accept = true;

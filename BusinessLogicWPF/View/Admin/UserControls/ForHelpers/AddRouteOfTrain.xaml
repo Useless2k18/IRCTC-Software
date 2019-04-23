@@ -139,6 +139,9 @@
                 Grid.Column="1"
                 Margin="10"
                 Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                materialDesign:ButtonProgressAssist.Value="-1"
+                materialDesign:ButtonProgressAssist.IsIndeterminate="False"
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
                 VerticalAlignment="Bottom"
                 Click="ButtonAcceptOnClick">
                 <TextBlock Padding="5">
