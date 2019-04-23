@@ -15,7 +15,6 @@ namespace BusinessLogicWPF.ViewModel.Admin.ForHelpers
     using System.Windows.Input;
 
     using BusinessLogicWPF.DesignAndValidation;
-    using BusinessLogicWPF.Domain;
     using BusinessLogicWPF.Helper;
     using BusinessLogicWPF.Properties;
 

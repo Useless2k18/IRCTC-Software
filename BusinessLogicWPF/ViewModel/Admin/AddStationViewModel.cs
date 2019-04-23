@@ -14,7 +14,6 @@ namespace BusinessLogicWPF.ViewModel.Admin
     using System.Text.RegularExpressions;
 
     using BusinessLogicWPF.DesignAndValidation;
-    using BusinessLogicWPF.Domain;
     using BusinessLogicWPF.Properties;
 
     /// <summary>

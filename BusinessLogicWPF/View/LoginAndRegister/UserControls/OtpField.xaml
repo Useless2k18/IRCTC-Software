@@ -6,8 +6,6 @@
              xmlns:local="clr-namespace:BusinessLogicWPF.View.LoginAndRegister.UserControls"
              xmlns:loginAndRegister="clr-namespace:BusinessLogicWPF.ViewModel.LoginAndRegister"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:domain="clr-namespace:BusinessLogicWPF.Domain"
-             xmlns:json="clr-namespace:BusinessLogicWPF.Model.Json"
              xmlns:behavioral="clr-namespace:BusinessLogicWPF.Model.Json.Behavioral"
              xmlns:designAndValidation="clr-namespace:BusinessLogicWPF.DesignAndValidation"
              mc:Ignorable="d" 

@@ -21,7 +21,6 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
     using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.ExtensionMethods;
     using BusinessLogicWPF.Helper;
-    using BusinessLogicWPF.Model;
     using BusinessLogicWPF.ViewModel.Admin.ForHelpers;
 
     using MaterialDesignThemes.Wpf;

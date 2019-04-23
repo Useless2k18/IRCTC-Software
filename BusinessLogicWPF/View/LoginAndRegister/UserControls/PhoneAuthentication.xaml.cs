@@ -12,11 +12,9 @@ namespace BusinessLogicWPF.View.LoginAndRegister.UserControls
     using System;
     using System.ComponentModel;
     using System.IO;
-    using System.Text.RegularExpressions;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Input;
     using System.Windows.Threading;
 
     using BusinessLogicWPF.Helper;

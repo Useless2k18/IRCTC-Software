@@ -20,7 +20,6 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
 
     using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.Helper;
-    using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Properties;
     using BusinessLogicWPF.ViewModel.StationMaster.ForHelper;
 

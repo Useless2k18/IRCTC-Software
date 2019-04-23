@@ -15,7 +15,6 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls
     using System.Windows.Controls;
 
     using BusinessLogicWPF.Core.Domain;
-    using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Properties;
     using BusinessLogicWPF.View.Helpers.UserControls;
     using BusinessLogicWPF.ViewModel.StationMaster;

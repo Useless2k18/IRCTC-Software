@@ -12,25 +12,17 @@ namespace BusinessLogicWPF.View.Admin.UserControls
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Linq;
     using System.Text.RegularExpressions;
-    using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
-    using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Threading;
 
     using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.Helper;
-    using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Properties;
     using BusinessLogicWPF.ViewModel.Admin;
-
-    using Firebase.Auth;
-
-    using Google.Cloud.Firestore;
 
     using MahApps.Metro.Controls;
 

@@ -14,7 +14,6 @@ namespace BusinessLogicWPF.DesignAndValidation
     using System.Windows;
     using System.Windows.Controls;
 
-    using BusinessLogicWPF.Domain;
     using BusinessLogicWPF.Properties;
 
     /// <summary>

@@ -11,7 +11,6 @@ namespace BusinessLogicWPF.View.LoginAndRegister.Window
 {
     using System;
     using System.IO;
-    using System.Runtime.InteropServices;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;

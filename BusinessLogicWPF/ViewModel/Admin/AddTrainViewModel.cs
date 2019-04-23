@@ -10,16 +10,10 @@
 namespace BusinessLogicWPF.ViewModel.Admin
 {
     using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.Text.RegularExpressions;
-    using System.Windows;
 
     using BusinessLogicWPF.DesignAndValidation;
-    using BusinessLogicWPF.Domain;
-    using BusinessLogicWPF.Helper;
-    using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Properties;
 
     /// <summary>

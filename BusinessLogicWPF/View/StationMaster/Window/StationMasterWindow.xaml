@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BusinessLogicWPF.View.StationMaster.Window"
         xmlns:viewmodels="clr-namespace:BusinessLogicWPF.ViewModel.StationMaster"
-        xmlns:domain="clr-namespace:BusinessLogicWPF.Domain"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         xmlns:designAndValidation="clr-namespace:BusinessLogicWPF.DesignAndValidation"

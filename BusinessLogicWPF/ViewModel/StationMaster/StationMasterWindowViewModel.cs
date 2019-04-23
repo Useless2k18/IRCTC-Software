@@ -13,7 +13,6 @@ namespace BusinessLogicWPF.ViewModel.StationMaster
     using System;
 
     using BusinessLogicWPF.DesignAndValidation;
-    using BusinessLogicWPF.Domain;
     using BusinessLogicWPF.Properties;
     using BusinessLogicWPF.View.StationMaster.UserControls;
 
