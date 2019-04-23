@@ -20,6 +20,13 @@ namespace BusinessLogicWPF.Core.Domain
     public class Route
     {
         /// <summary>
+        /// Gets or sets the day count.
+        /// </summary>
+        [CanBeNull]
+        [FirestoreProperty("dayCount")]
+        public int DayCount { get; set; }
+        
+        /// <summary>
         /// Gets or sets the arrival time.
         /// </summary>
         [CanBeNull]

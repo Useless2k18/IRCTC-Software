@@ -64,6 +64,13 @@ namespace BusinessLogicWPF.Core.Domain
         public string DestinationStation { get; set; }
 
         /// <summary>
+        /// Gets or sets the duration.
+        /// </summary>
+        [CanBeNull]
+        [FirestoreProperty("duration")]
+        public string Duration { get; set; }
+
+        /// <summary>
         /// Gets or sets the rake zone.
         /// </summary>
         [CanBeNull]
