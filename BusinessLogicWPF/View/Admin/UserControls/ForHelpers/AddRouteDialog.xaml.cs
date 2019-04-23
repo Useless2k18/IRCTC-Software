@@ -11,6 +11,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -42,6 +43,24 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
             if (DataHelper.StationsList != null)
             {
                 this.listOfStations = DataHelper.StationsList.Stations.Values.ToList();
+            }
+
+            if (DataHelper.Train != null)
+            {
+                var span = DataHelper.Train.Duration;
+                var time = new TimeSpan(
+                    int.Parse(span.Split(':')[0]), // hours
+                    int.Parse(span.Split(':')[1]), // minutes
+                    0); // seconds
+
+                var listOfDays = new ObservableCollection<int>();
+
+                for (var i = 1; i <= Math.Floor(time.TotalDays) + 1; i++)
+                {
+                    listOfDays.Add(i);
+                }
+
+                this.ComboBoxDayCount.ItemsSource = listOfDays;
             }
             
             // Just for deleting already selected station
@@ -89,7 +108,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
         /// <param name="e">
         /// The e.
         /// </param>
-        private void TextBoxStationCodeOnLostFocus(object sender, RoutedEventArgs e)
+        private void ComboBoxStationCodeOnLostFocus(object sender, RoutedEventArgs e)
         {
             if (this.ComboBoxStationCode.SelectedValue as string == DataHelper.Train.SourceStation)
             {
@@ -107,20 +126,6 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
         }
 
         /// <summary>
-        /// The button cancel on click.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void ButtonCancelOnClick(object sender, RoutedEventArgs e)
-        {
-            DialogHost.CloseDialogCommand.Execute(null, null);
-        }
-
-        /// <summary>
         /// The button accept on click.
         /// </summary>
         /// <param name="sender">
@@ -132,6 +137,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
         private void ButtonAcceptOnClick(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(this.ComboBoxStationCode.Text)
+                || string.IsNullOrWhiteSpace(this.ComboBoxDayCount.Text)
                 || string.IsNullOrWhiteSpace(this.TextBoxDepartureTime.Text)
                 || string.IsNullOrWhiteSpace(this.TextBoxArrivalTime.Text))
             {
@@ -174,6 +180,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
             var route = new Route
                             {
                                 StationCode = this.ComboBoxStationCode.SelectedValue as string,
+                                DayCount = this.ComboBoxDayCount.SelectedValue is int value ? value : 0,
                                 DepartureTime = this.TextBoxDepartureTime.Text,
                                 ArrivalTime = this.TextBoxArrivalTime.Text
                             };

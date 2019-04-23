@@ -57,6 +57,7 @@
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <TextBox
@@ -153,8 +154,28 @@
                     </ComboBox>
 
                     <TextBox
-                        x:Name="TextBoxTrainRakeZone"
+                        x:Name="TextBoxTrainDuration"
                         Grid.Row="5"
+                        Grid.Column="0"
+                        Margin="10,10,10,5"
+                        MaxLength="5"
+                        materialDesign:HintAssist.Hint="Enter Train Duration"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+                        <TextBox.Text>
+                            <Binding 
+                                Path="Duration" 
+                                UpdateSourceTrigger="PropertyChanged"
+                                ValidatesOnExceptions="True">
+                                <Binding.ValidationRules>
+                                    <designAndValidation:NotEmptyValidationRule ValidatesOnTargetUpdated="True" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <TextBox
+                        x:Name="TextBoxTrainRakeZone"
+                        Grid.Row="6"
                         Grid.Column="0"
                         Margin="10,10,10,5"
                         materialDesign:HintAssist.Hint="Enter Train Rake Zone"

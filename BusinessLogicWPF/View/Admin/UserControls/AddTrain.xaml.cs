@@ -384,11 +384,14 @@ namespace BusinessLogicWPF.View.Admin.UserControls
         /// </param>
         private void ButtonNextOnClick(object sender, RoutedEventArgs e)
         {
+            #region Validations
+
             if (string.IsNullOrWhiteSpace(this.TextBoxTrainNo.Text)
                 || string.IsNullOrWhiteSpace(this.TextBoxTrainName.Text)
                 || string.IsNullOrWhiteSpace(this.TextBoxTrainType.Text)
                 || string.IsNullOrWhiteSpace(this.ComboBoxTrainSource.Text)
                 || string.IsNullOrWhiteSpace(this.ComboBoxTrainDestination.Text)
+                || string.IsNullOrWhiteSpace(this.TextBoxTrainDuration.Text)
                 || string.IsNullOrWhiteSpace(this.TextBoxTrainRakeZone.Text))
             {
                 MessageBox.Show("Please fill up all the fields!");
@@ -400,6 +403,16 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                 MessageBox.Show("Train Number cannot be less than 5");
                 return;
             }
+
+            var regexForTime = new Regex(@"^([0-9]?[0-9]):[0-5][0-9]$");
+            
+            if (regexForTime.Match(this.TextBoxTrainDuration.Text) == Match.Empty)
+            {
+                MessageBox.Show("Duration must be of Format HH:MM");
+                return;
+            }
+
+            #endregion
 
             var c = (MenuItem)this.TreeView.Items[0];
             var count = 0;
@@ -513,6 +526,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                                        Type = this.TextBoxTrainType.Text,
                                        SourceStation = this.ComboBoxTrainSource.SelectedValue as string,
                                        DestinationStation = this.ComboBoxTrainDestination.SelectedValue as string,
+                                       Duration = this.TextBoxTrainDuration.Text,
                                        RakeZone = this.TextBoxTrainRakeZone.Text,
                                        Coach = new Coach
                                                    {

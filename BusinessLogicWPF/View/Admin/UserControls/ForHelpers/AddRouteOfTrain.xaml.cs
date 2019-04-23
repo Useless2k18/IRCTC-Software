@@ -221,6 +221,24 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
         }
 
         /// <summary>
+        /// The button back on click.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void ButtonBackOnClick(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure to go back?", "Alert", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                DataHelper.Accept = true;
+                this.Refresh();
+            }
+        }
+
+        /// <summary>
         /// The background worker do work.
         /// </summary>
         /// <param name="sender">
