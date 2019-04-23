@@ -9,7 +9,10 @@
 
 namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
     using System.Windows;
     using System.Windows.Controls;
 
@@ -81,6 +84,14 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
                 }
             }
 
+            this.AddNewTextBox(true);
+
+            // Update Static class DataHelper
+            DataHelper.StatusForEnable = false;
+        }
+
+        private void AddNewTextBox(bool newFlag = false)
+        {
             var textBox = new TextBox
                               {
                                   Name = "TextBox" + ++this.counter, 
@@ -92,11 +103,33 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
             HintAssist.SetHint(textBox, "Enter Coach Number");
             HintAssist.SetIsFloating(textBox, true);
 
+            if (newFlag)
+            {
+                if (this.counter != 0)
+                {
+                    var s = "TextBox" + (this.counter - 1);
+
+                    var findOldTextBox = ExtendedVisualTreeHelper.FindChild<TextBox>(this.StackPanel, s);
+
+                    if (string.IsNullOrWhiteSpace(findOldTextBox?.Text))
+                    {
+                        return;
+                    }
+
+                    var newTextBoxText = $"{new string(findOldTextBox.Text.TakeWhile(char.IsLetter).ToArray())}{this.counter}";
+                    textBox.Text = newTextBoxText;
+
+                    // var text = $"{new string(findOldTextBox.Text.Where(char.IsDigit).ToArray())}";
+                    // var resultString = Regex.Match(findOldTextBox.Text, @"\d+").Value;
+                    var resultString = string.Join(
+                        " ",
+                        Regex.Matches(findOldTextBox.Text, @"\d+").OfType<Match>().Select(m => m.Value));
+                    var resultStringArray = resultString.Split(' ');
+                }
+            }
+
             // Update ScrollViewer
             this.ScrollViewer.ScrollToEnd();
-
-            // Update Static class DataHelper
-            DataHelper.StatusForEnable = false;
 
             this.StackPanel.Children.Add(textBox);
         }
