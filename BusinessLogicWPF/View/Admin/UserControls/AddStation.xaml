@@ -25,17 +25,6 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <DockPanel
-            Grid.Row="0"
-            Grid.ColumnSpan="2"
-            Dock="Top">
-            <ProgressBar
-                x:Name="ProgressBar"
-                DockPanel.Dock="Top"
-                IsIndeterminate="False"
-                Visibility="Hidden" />
-        </DockPanel>
-
         <Grid
             Grid.Row="1"
             Grid.Column="0"
@@ -165,6 +154,9 @@
                 x:Name="ButtonAccept"
                 Click="ButtonAcceptOnClick"
                 Margin="20"
+                materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="False"
+                materialDesign:ButtonProgressAssist.Value="-1"
                 Style="{StaticResource MaterialDesignRaisedAccentButton}">
                 <TextBlock>
                     <materialDesign:PackIcon Kind="TickCircle" />
