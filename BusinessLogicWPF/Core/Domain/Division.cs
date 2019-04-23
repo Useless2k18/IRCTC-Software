@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace BusinessLogicWPF.Model
+namespace BusinessLogicWPF.Core.Domain
 {
     using BusinessLogicWPF.Properties;
 

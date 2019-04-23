@@ -11,6 +11,8 @@ namespace BusinessLogicWPF.Model.Json.Creation
 {
     using System.Collections.Generic;
 
+    using BusinessLogicWPF.Core.Domain;
+
     /// <summary>
     /// The stations list.
     /// </summary>

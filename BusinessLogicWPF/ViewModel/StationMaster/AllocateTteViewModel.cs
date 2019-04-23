@@ -15,6 +15,7 @@ namespace BusinessLogicWPF.ViewModel.StationMaster
     using System.Diagnostics;
     using System.Runtime.CompilerServices;
 
+    using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.GoogleCloudFireStoreLibrary;
     using BusinessLogicWPF.Helper;
     using BusinessLogicWPF.Model;

@@ -11,6 +11,7 @@ namespace BusinessLogicWPF.Helper
 {
     using System.Collections.Generic;
 
+    using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Model.Json.Creation;
     using BusinessLogicWPF.Properties;

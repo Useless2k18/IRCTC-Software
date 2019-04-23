@@ -13,6 +13,7 @@ namespace BusinessLogicWPF.ViewModel.StationMaster.ForHelper
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
+    using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.Helper;
     using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Properties;

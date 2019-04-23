@@ -17,6 +17,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
     using System.Windows;
     using System.Windows.Controls;
 
+    using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.Helper;
     using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Model.Json.Creation;

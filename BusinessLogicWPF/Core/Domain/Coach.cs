@@ -9,7 +9,7 @@
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable StyleCop.SA1300
-namespace BusinessLogicWPF.Model
+namespace BusinessLogicWPF.Core.Domain
 {
     using System.Collections.Generic;
 

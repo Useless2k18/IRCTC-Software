@@ -19,6 +19,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
     using System.Windows.Controls;
     using System.Windows.Input;
 
+    using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.Model;
     using BusinessLogicWPF.View.Admin.UserControls.ForHelpers;
     using BusinessLogicWPF.View.Helpers.UserControls;

@@ -8,6 +8,7 @@
              xmlns:forHelpers="clr-namespace:BusinessLogicWPF.ViewModel.Admin.ForHelpers"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              xmlns:model="clr-namespace:BusinessLogicWPF.Model"
+             xmlns:domain="clr-namespace:BusinessLogicWPF.Core.Domain"
              mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -61,27 +62,27 @@
                             ItemsSource="{Binding}">
                             <DataGrid.Columns>
                                 <materialDesign:MaterialDataGridTextColumn
-                                    Binding="{Binding (model:Route.StationCode)}"
+                                    Binding="{Binding (domain:Route.StationCode)}"
                                     Header="Station Code"
                                     EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     MaxLength="8"/>
                                 <materialDesign:MaterialDataGridTextColumn
-                                    Binding="{Binding (model:Route.StationZone)}"
+                                    Binding="{Binding (domain:Route.StationZone)}"
                                     Header="Station Zone"
                                     EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     MaxLength="8"/>
                                 <materialDesign:MaterialDataGridTextColumn
-                                    Binding="{Binding (model:Route.StationDivision)}"
+                                    Binding="{Binding (domain:Route.StationDivision)}"
                                     Header="Station Division"
                                     EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     MaxLength="8"/>
                                 <materialDesign:MaterialDataGridTextColumn
-                                    Binding="{Binding (model:Route.DepartureTime)}"
+                                    Binding="{Binding (domain:Route.DepartureTime)}"
                                     Header="Departure Time"
                                     EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     MaxLength="8"/>
                                 <materialDesign:MaterialDataGridTextColumn
-                                    Binding="{Binding (model:Route.ArrivalTime)}"
+                                    Binding="{Binding (domain:Route.ArrivalTime)}"
                                     Header="Arrival Time"
                                     EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnPopupEditingStyle}"
                                     MaxLength="8"/>

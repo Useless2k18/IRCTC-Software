@@ -7,10 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace BusinessLogicWPF.Model
+namespace BusinessLogicWPF.Core.Domain
 {
-    using BusinessLogicWPF.Properties;
-
     using Google.Cloud.Firestore;
 
     /// <summary>

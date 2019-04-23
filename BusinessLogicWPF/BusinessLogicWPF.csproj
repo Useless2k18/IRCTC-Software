@@ -331,20 +331,20 @@
     <Compile Include="Helper\StaticDbContext.cs" />
     <Compile Include="Helper\ExtendedVisualTreeHelper.cs" />
     <Compile Include="JsClasses\DotNetPhoneNumberAuthentication.cs" />
-    <Compile Include="Model\Coach.cs" />
-    <Compile Include="Model\Division.cs" />
+    <Compile Include="Core\Domain\Coach.cs" />
+    <Compile Include="Core\Domain\Division.cs" />
     <Compile Include="Model\EnumEmployeeGroups.cs" />
     <Compile Include="Model\EnumEmployeeType.cs" />
     <Compile Include="Model\Json\Creation\StationsList.cs" />
     <Compile Include="Model\Json\Creation\ZoneAndDivision.cs" />
     <Compile Include="Model\Json\Behavioral\IsdCodes.cs" />
-    <Compile Include="Model\Route.cs" />
-    <Compile Include="Model\Station.cs" />
+    <Compile Include="Core\Domain\Route.cs" />
+    <Compile Include="Core\Domain\Station.cs" />
     <Compile Include="Model\StationFrom.cs" />
-    <Compile Include="Model\StationMaster.cs" />
+    <Compile Include="Core\Domain\StationMaster.cs" />
     <Compile Include="Model\StationTo.cs" />
-    <Compile Include="Model\Train.cs" />
-    <Compile Include="Model\Tte.cs" />
+    <Compile Include="Core\Domain\Train.cs" />
+    <Compile Include="Core\Domain\Tte.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Style\Class\TextInputToVisibilityConverter.cs" />
     <Compile Include="Style\Class\NullTextBox.cs" />
@@ -605,7 +605,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Collections\" />
-    <Folder Include="UnitOfWork\" />
+    <Folder Include="Core\Repositories\" />
+    <Folder Include="Persistence\Configurations\" />
+    <Folder Include="Persistence\Repositories\" />
     <Folder Include="View\Home\UserControls\" />
   </ItemGroup>
   <ItemGroup>

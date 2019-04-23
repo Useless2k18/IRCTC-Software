@@ -12,6 +12,7 @@ namespace BusinessLogicWPF.ViewModel.Admin.ForHelpers
     using System.ComponentModel;
     using System.Runtime.CompilerServices;
 
+    using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Properties;
 

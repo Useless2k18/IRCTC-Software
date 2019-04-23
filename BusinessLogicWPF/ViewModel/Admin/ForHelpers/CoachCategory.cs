@@ -11,6 +11,7 @@ namespace BusinessLogicWPF.ViewModel.Admin.ForHelpers
 {
     using System.Collections.ObjectModel;
 
+    using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Properties;
 
