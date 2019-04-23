@@ -148,7 +148,6 @@
                     x:Name="ButtonBack"
                     Margin="10"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    VerticalAlignment="Bottom"
                     Click="ButtonBackOnClick">
                     <TextBlock Padding="5">
                         <materialDesign:PackIcon
