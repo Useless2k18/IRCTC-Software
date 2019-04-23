@@ -136,6 +136,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
 
             var button = (Button)this.FindName("ButtonAdd");
             var button2 = (Button)this.FindName("ButtonSuccess");
+            var button3 = (Button)this.FindName("ButtonDelete");
 
             DataHelper.CoachesList = new List<string>();
 
@@ -150,10 +151,11 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
                 }
             }
 
-            if (button != null && button2 != null)
+            if (button != null && button2 != null && button3 != null)
             {
                 button.Visibility = Visibility.Collapsed;
                 button2.Visibility = Visibility.Collapsed;
+                button3.Visibility = Visibility.Collapsed;
             }
 
             DataHelper.StatusForEnable = true;
