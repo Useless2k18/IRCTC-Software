@@ -13,6 +13,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -149,13 +150,32 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                 }
             }
 
+            ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, true);
+
+            var stationMaster = new StationMaster
+                                    {
+                                        Name = this.TextBoxStationMasterName.Text,
+                                        Zone = this.ComboBoxZoneName.Text,
+                                        Division = this.ComboBoxDivisionName.Text
+                                    };
+
             var backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += this.BackgroundWorkerDoWork;
-            backgroundWorker.RunWorkerCompleted += this.BackgroundWorkerRunWorkerCompleted;
+            backgroundWorker.DoWork += (o, args) =>
+                {
+                    var task = this.AddStationMasterAsync(stationMaster);
+
+                    Task.WaitAll(task);
+                };
+            backgroundWorker.RunWorkerCompleted += (o, args) =>
+                {
+                    MessageBox.Show("You have successfully added Station Master" + $"\nName: {this.TextBoxStationMasterName.Text}\nId: {this.stationMasterId}");
+                    ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, false);
+                };
 
             try
             {
                 backgroundWorker.RunWorkerAsync();
+                this.Refresh();
             }
             catch (Exception exception)
             {
@@ -164,35 +184,21 @@ namespace BusinessLogicWPF.View.Admin.UserControls
         }
 
         /// <summary>
-        /// The background worker do work.
+        /// The add station master async.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
+        /// <param name="stationMaster">
+        /// The station master.
         /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private async void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        private async Task AddStationMasterAsync(StationMaster stationMaster)
         {
-            var stationMasterName = string.Empty;
-            var zone = string.Empty;
-            var division = string.Empty;
-
-            this.Dispatcher.Invoke(
-                () =>
-                    {
-                        ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, true);
-                        stationMasterName = this.TextBoxStationMasterName.Text;
-                        zone = this.ComboBoxZoneName.Text;
-                        division = this.ComboBoxDivisionName.Text;
-                    },
-                DispatcherPriority.Normal);
-
             var id = StaticDbContext.ConnectFireStore.GetAllDocumentId(
                 "Root",
                 "Employee",
-                zone,
-                division,
+                stationMaster.Zone,
+                stationMaster.Division,
                 "StationMaster");
 
             var max = 0;
@@ -204,58 +210,51 @@ namespace BusinessLogicWPF.View.Admin.UserControls
 
             this.stationMasterId = $"{(int)EnumEmployeeGroups.GroupB:D2}" + 
                                    $"{(int)EnumEmployeeType.StationMaster:D2}" + 
-                                   $"{DataHelper.ZoneAndDivisionModel.ZoneList.IndexOf(zone):D2}" + 
-                                   $"{DataHelper.ZoneAndDivisionModel.DivisionList[zone].IndexOf(division):D2}" + 
+                                   $"{DataHelper.ZoneAndDivisionModel.ZoneList.IndexOf(stationMaster.Zone):D2}" + 
+                                   $"{DataHelper.ZoneAndDivisionModel.DivisionList[stationMaster.Zone].IndexOf(stationMaster.Division):D2}" + 
                                    $"{(max + 1):D7}";
 
-            var stationMaster = new StationMaster
-                                    {
-                                        Name = stationMasterName, 
-                                        Id = this.stationMasterId
-                                    };
+            stationMaster.Id = this.stationMasterId;
 
             var noOfStationMaster = 0;
 
-            var divisionField =
-                StaticDbContext.ConnectFireStore.GetCollectionFields("Root", "Employee", zone, division);
+            var divisionField = StaticDbContext.ConnectFireStore.GetCollectionFields(
+                "Root",
+                "Employee",
+                stationMaster.Zone,
+                stationMaster.Division);
 
             if (divisionField != null)
             {
                 noOfStationMaster = Convert.ToInt32(divisionField["noOfStationMaster"]);
             }
 
-            noOfStationMaster++;
+            if (StaticDbContext.ConnectFireStore?.FindDocument(
+                    stationMaster.Id,
+                    "Root",
+                    "Employee",
+                    stationMaster.Zone,
+                    stationMaster.Division,
+                    "StationMaster") == false)
+            {
+                noOfStationMaster++;
+            }
 
             await StaticDbContext.ConnectFireStore.AddOrUpdateCollectionDataAsync(
                 new Dictionary<string, int> { { "noOfStationMaster", noOfStationMaster } },
                 "Root",
                 "Employee",
-                zone,
-                division);
+                stationMaster.Zone,
+                stationMaster.Division);
 
             await StaticDbContext.ConnectFireStore.AddOrUpdateCollectionDataAsync(
                 stationMaster,
                 "Root",
                 "Employee",
-                zone,
-                division,
+                stationMaster.Zone,
+                stationMaster.Division,
                 "StationMaster",
                 stationMaster.Id);
-        }
-
-        /// <summary>
-        /// The background worker run worker completed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            MessageBox.Show("You have successfully added Station Master" + $"\nName: {this.TextBoxStationMasterName.Text}\nId: {this.stationMasterId}");
-            ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, false);
         }
 
         /// <summary>
@@ -270,7 +269,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
 
             foreach (var comboBox in this.FindChildren<ComboBox>())
             {
-                comboBox.SelectedIndex = 1;
+                comboBox.SelectedIndex = -1;
             }
 
             ErrorLabelHelper.Reset();

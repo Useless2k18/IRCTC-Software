@@ -13,6 +13,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
@@ -149,13 +150,32 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                 }
             }
 
+            ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, true);
+
+            var tte = new Tte
+                          {
+                              Name = this.TextBoxTteName.Text,
+                              Zone = this.ComboBoxZoneName.Text,
+                              Division = this.ComboBoxDivisionName.Text
+                          };
+            
             var backgroundWorker = new BackgroundWorker();
-            backgroundWorker.DoWork += this.BackgroundWorkerDoWork;
-            backgroundWorker.RunWorkerCompleted += this.BackgroundWorkerRunWorkerCompleted;
+            backgroundWorker.DoWork += (o, args) =>
+                {
+                    var task = this.AddTteAsync(tte);
+
+                    Task.WaitAll(task);
+                };
+            backgroundWorker.RunWorkerCompleted += (o, args) =>
+                {
+                    MessageBox.Show("You have successfully added TTE" + $"\nName: {this.TextBoxTteName.Text}\nId: {this.tteId}");
+                    ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, false);
+                };
 
             try
             {
                 backgroundWorker.RunWorkerAsync();
+                this.Refresh();
             }
             catch (Exception exception)
             {
@@ -164,35 +184,21 @@ namespace BusinessLogicWPF.View.Admin.UserControls
         }
 
         /// <summary>
-        /// The background worker do work.
+        /// The Add TTE async.
         /// </summary>
-        /// <param name="sender">
-        /// The sender.
+        /// <param name="tte">
+        /// The TTE
         /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private async void BackgroundWorkerDoWork(object sender, DoWorkEventArgs e)
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        private async Task AddTteAsync(Tte tte)
         {
-            var tteName = string.Empty;
-            var zone = string.Empty;
-            var division = string.Empty;
-
-            this.Dispatcher.Invoke(
-                () =>
-                    {
-                        ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, true);
-                        tteName = this.TextBoxTteName.Text;
-                        zone = this.ComboBoxZoneName.Text;
-                        division = this.ComboBoxDivisionName.Text;
-                    },
-                DispatcherPriority.Normal);
-
             var id = StaticDbContext.ConnectFireStore.GetAllDocumentId(
                 "Root",
                 "Employee",
-                zone,
-                division,
+                tte.Zone,
+                tte.Division,
                 "Tte");
 
             var max = 0;
@@ -204,58 +210,48 @@ namespace BusinessLogicWPF.View.Admin.UserControls
 
             this.tteId = $"{(int)EnumEmployeeGroups.GroupB:D2}" + 
                          $"{(int)EnumEmployeeType.Tte:D2}" + 
-                         $"{DataHelper.ZoneAndDivisionModel.ZoneList.IndexOf(zone):D2}" + 
-                         $"{DataHelper.ZoneAndDivisionModel.DivisionList[zone].IndexOf(division):D2}" + 
+                         $"{DataHelper.ZoneAndDivisionModel.ZoneList.IndexOf(tte.Zone):D2}" + 
+                         $"{DataHelper.ZoneAndDivisionModel.DivisionList[tte.Zone].IndexOf(tte.Division):D2}" + 
                          $"{(max + 1):D7}";
-            
-            var tte = new Tte
-                          {
-                              Name = tteName,
-                              Id = this.tteId
-                          };
+
+            tte.Id = this.tteId;
 
             var noOfTte = 0;
 
             var divisionField =
-                StaticDbContext.ConnectFireStore.GetCollectionFields("Root", "Employee", zone, division);
+                StaticDbContext.ConnectFireStore.GetCollectionFields("Root", "Employee", tte.Zone, tte.Division);
 
             if (divisionField != null)
             {
                 noOfTte = Convert.ToInt32(divisionField["noOfTte"]);
             }
 
-            noOfTte++;
+            if (StaticDbContext.ConnectFireStore?.FindDocument(
+                    tte.Id,
+                    "Root",
+                    "Employee",
+                    tte.Zone,
+                    tte.Division,
+                    "Tte") == false)
+            {
+                noOfTte++;
+            }
 
             await StaticDbContext.ConnectFireStore.AddOrUpdateCollectionDataAsync(
                 new Dictionary<string, int> { { "noOfTte", noOfTte } },
                 "Root",
                 "Employee",
-                zone,
-                division);
+                tte.Zone,
+                tte.Division);
 
             await StaticDbContext.ConnectFireStore.AddOrUpdateCollectionDataAsync(
                 tte,
                 "Root",
                 "Employee",
-                zone,
-                division,
+                tte.Zone,
+                tte.Division,
                 "Tte",
                 tte.Id);
-        }
-
-        /// <summary>
-        /// The background worker run worker completed.
-        /// </summary>
-        /// <param name="sender">
-        /// The sender.
-        /// </param>
-        /// <param name="e">
-        /// The e.
-        /// </param>
-        private void BackgroundWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            MessageBox.Show("You have successfully added TTE" + $"\nName: {this.TextBoxTteName.Text}\nId: {this.tteId}");
-            ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, false);
         }
 
         /// <summary>
@@ -270,7 +266,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
 
             foreach (var comboBox in this.FindChildren<ComboBox>())
             {
-                comboBox.SelectedIndex = 1;
+                comboBox.SelectedIndex = -1;
             }
 
             ErrorLabelHelper.Reset();
