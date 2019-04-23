@@ -28,5 +28,17 @@ namespace BusinessLogicWPF.Core.Domain
         /// </summary>
         [FirestoreProperty("name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the zone.
+        /// </summary>
+        [FirestoreProperty("zone")]
+        public string Zone { get; set; }
+
+        /// <summary>
+        /// Gets or sets the division.
+        /// </summary>
+        [FirestoreProperty("division")]
+        public string Division { get; set; }
     }
 }
