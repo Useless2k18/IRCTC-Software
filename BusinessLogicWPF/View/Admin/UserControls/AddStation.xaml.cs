@@ -15,6 +15,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Documents;
@@ -31,6 +32,8 @@ namespace BusinessLogicWPF.View.Admin.UserControls
     using Google.Cloud.Firestore;
 
     using MahApps.Metro.Controls;
+
+    using MaterialDesignThemes.Wpf;
 
     /// <summary>
     /// Interaction logic for AddStations.XAML
@@ -277,6 +280,8 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                 return;
             }
 
+            ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, true);
+
             var station = new Station
                               {
                                   Zone = this.ComboBoxZoneName.Text,
@@ -287,47 +292,16 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                               };
 
             var backgroundWorker2 = new BackgroundWorker();
-            backgroundWorker2.DoWork += async (o, args) =>
+            backgroundWorker2.DoWork += (o, args) =>
                 {
-                    this.Dispatcher.Invoke(
-                        () => this.ProgressBar.Visibility = Visibility.Visible,
-                        DispatcherPriority.Normal);
+                    var task = this.AddStationAsync(station);
 
-                    if (StaticDbContext.ConnectFireStore != null)
-                    {
-                        await StaticDbContext.ConnectFireStore?.AddOrUpdateCollectionDataAsync(
-                            station,
-                            "Root",
-                            "Stations",
-                            "StationDetails",
-                            station.Zone,
-                            station.RailwayDivision,
-                            station.StationCode);
-
-                        var divisionDetails = StaticDbContext.ConnectFireStore?.GetCollectionFields(
-                            "Root",
-                            "Stations",
-                            "StationDetails",
-                            station.Zone);
-
-                        var listOfDivisions = (List<object>)divisionDetails?["divisions"];
-
-                        if (listOfDivisions?.Contains(station.RailwayDivision) == false)
-                        {
-                            listOfDivisions.Add(station.RailwayDivision);
-                            await StaticDbContext.ConnectFireStore?.AddOrUpdateCollectionDataAsync(
-                                divisionDetails,
-                                "Root",
-                                "Stations",
-                                "StationDetails",
-                                station.Zone);
-                        }
-                    }
+                    Task.WaitAll(task);
                 };
 
             backgroundWorker2.RunWorkerCompleted += (o, args) =>
                 {
-                    this.ProgressBar.Visibility = Visibility.Hidden;
+                    ButtonProgressAssist.SetIsIndicatorVisible(this.ButtonAccept, false);
                     MessageBox.Show("Data Successfully added");
                 };
 
@@ -339,6 +313,58 @@ namespace BusinessLogicWPF.View.Admin.UserControls
             catch (Exception exception)
             {
                 MessageBox.Show(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// The add station async.
+        /// </summary>
+        /// <param name="station">
+        /// The station.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        private async Task AddStationAsync(Station station)
+        {
+            if (StaticDbContext.ConnectFireStore != null)
+            {
+                await StaticDbContext.ConnectFireStore?.AddOrUpdateCollectionDataAsync(
+                    station,
+                    "Root",
+                    "Stations",
+                    "StationDetails",
+                    station.Zone,
+                    station.RailwayDivision,
+                    station.StationCode);
+
+                var divisionDetails = StaticDbContext.ConnectFireStore?.GetCollectionFields(
+                    "Root",
+                    "Stations",
+                    "StationDetails",
+                    station.Zone);
+
+                var listOfDivisions = (List<object>)divisionDetails?["divisions"];
+
+                if (listOfDivisions?.Contains(station.RailwayDivision) == false)
+                {
+                    listOfDivisions.Add(station.RailwayDivision);
+                    var noOfDivisions = Convert.ToInt32(divisionDetails["noOfDivision"]);
+                    noOfDivisions++;
+                    await StaticDbContext.ConnectFireStore?.AddOrUpdateCollectionDataAsync(
+                        divisionDetails,
+                        "Root",
+                        "Stations",
+                        "StationDetails",
+                        station.Zone);
+
+                    await StaticDbContext.ConnectFireStore?.AddOrUpdateCollectionDataAsync(
+                        new Dictionary<string, int> { { "noOfDivision", noOfDivisions } },
+                        "Root",
+                        "Stations",
+                        "StationDetails",
+                        station.Zone);
+                }
             }
         }
 
