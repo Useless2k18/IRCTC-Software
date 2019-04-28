@@ -21,7 +21,7 @@ Lots of features we are added already and some we are going to upload soon.
 2. Add new Train with Route as well as Coach details...Oh by the way, Train No must be of 5 digit😜😜
 3. Add new Station Master with Name and User Id(auto generated).
 4. Add new TTE with Name and auto generated User Id.
-5. One more thing... both the TTE as well as Station Master are **Group B** officers here(after all our assumptions).
+5. One more thing... both the TTE as well as Station Master are **Group B** officers here(after all... our assumptions).
 6. Station Master unique code is *5* and TTE unique code is *9*.
     
 ##### Station Master module
