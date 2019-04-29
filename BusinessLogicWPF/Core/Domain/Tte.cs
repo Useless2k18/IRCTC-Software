@@ -24,10 +24,22 @@ namespace BusinessLogicWPF.Core.Domain
         public string Id { get; set; }
 
         /// <summary>
+        /// Gets or sets the email id.
+        /// </summary>
+        [FirestoreProperty("emailId")]
+        public string EmailId { get; set; }
+
+        /// <summary>
         /// Gets or sets the name.
         /// </summary>
         [FirestoreProperty("name")]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the password.
+        /// </summary>
+        [FirestoreProperty("password")]
+        public string Password { get; set; }
 
         /// <summary>
         /// Gets or sets the zone.
