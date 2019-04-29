@@ -17,7 +17,6 @@ namespace BusinessLogicWPF.View.Admin.UserControls
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-    using System.Windows.Threading;
 
     using BusinessLogicWPF.Core.Domain;
     using BusinessLogicWPF.Helper;
@@ -132,6 +131,8 @@ namespace BusinessLogicWPF.View.Admin.UserControls
         private void ButtonAcceptOnClick(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(this.TextBoxTteName.Text)
+                || string.IsNullOrWhiteSpace(this.TextBoxTteEmailId.Text)
+                || string.IsNullOrWhiteSpace(this.PasswordBoxTtePassword.Password)
                 || string.IsNullOrWhiteSpace(this.ComboBoxZoneName.Text)
                 || string.IsNullOrWhiteSpace(this.ComboBoxDivisionName.Text))
             {
@@ -155,6 +156,8 @@ namespace BusinessLogicWPF.View.Admin.UserControls
             var tte = new Tte
                           {
                               Name = this.TextBoxTteName.Text,
+                              EmailId = this.TextBoxTteEmailId.Text,
+                              Password = this.PasswordBoxTtePassword.Password,
                               Zone = this.ComboBoxZoneName.Text,
                               Division = this.ComboBoxDivisionName.Text
                           };
@@ -262,6 +265,11 @@ namespace BusinessLogicWPF.View.Admin.UserControls
             foreach (var textBox in this.FindChildren<TextBox>())
             {
                 textBox.Clear();
+            }
+
+            foreach (var passwordBox in this.FindChildren<PasswordBox>())
+            {
+                passwordBox.Clear();
             }
 
             foreach (var comboBox in this.FindChildren<ComboBox>())

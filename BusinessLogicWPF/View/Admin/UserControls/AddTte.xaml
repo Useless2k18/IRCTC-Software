@@ -13,6 +13,8 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
         <TextBox
@@ -21,10 +23,27 @@
             Margin="10,10,10,10"
             materialDesign:HintAssist.Hint="Enter TTE Name"
             Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+
+        <TextBox
+            x:Name="TextBoxTteEmailId"
+            Grid.Row="1"
+            Margin="10,0,10,10"
+            materialDesign:HintAssist.Hint="Enter Email Id"
+            Style="{StaticResource MaterialDesignFloatingHintTextBox}">
+            <TextBox.CommandBindings></TextBox.CommandBindings>
+        </TextBox>
+
+        <PasswordBox
+            x:Name="PasswordBoxTtePassword"
+            Grid.Row="2"
+            Margin="10,0,10,10"
+            materialDesign:HintAssist.Hint="Enter Password"
+            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
+        </PasswordBox>
         
         <ComboBox
             x:Name="ComboBoxZoneName"
-            Grid.Row="1"
+            Grid.Row="3"
             Margin="10,0,10,10"
             materialDesign:HintAssist.Hint="Enter Zone Name"
             Style="{StaticResource MaterialDesignFloatingHintComboBox}"
@@ -40,7 +59,7 @@
 
         <ComboBox
             x:Name="ComboBoxDivisionName"
-            Grid.Row="2"
+            Grid.Row="4"
             Margin="10,10,10,10"
             IsEnabled="False"
             materialDesign:HintAssist.Hint="Enter Division Name"
@@ -54,7 +73,7 @@
         </ComboBox>
 
         <StackPanel
-            Grid.Row="3"
+            Grid.Row="5"
             Margin="0,20,0,0"
             Orientation="Horizontal"
             HorizontalAlignment="Center"
