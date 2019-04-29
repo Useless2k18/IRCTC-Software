@@ -350,8 +350,10 @@
     <Compile Include="Style\Class\NullTextBox.cs" />
     <Compile Include="Style\Class\WaterMarkTextHelper.cs" />
     <Compile Include="TypeConverters\MultiValueConverter.cs" />
+    <Compile Include="ViewModel\Admin\AddStationMasterViewModel.cs" />
     <Compile Include="ViewModel\Admin\AddStationViewModel.cs" />
     <Compile Include="ViewModel\Admin\AddTrainViewModel.cs" />
+    <Compile Include="ViewModel\Admin\AddTteViewModel.cs" />
     <Compile Include="ViewModel\Admin\AdminWindowViewModel.cs" />
     <Compile Include="ViewModel\Admin\ForHelpers\AddRouteDialogViewModel.cs" />
     <Compile Include="ViewModel\Admin\ForHelpers\AddRouteOfTrainViewModel.cs" />
