@@ -20,7 +20,7 @@ namespace BusinessLogicWPF.GoogleCloudFireStoreLibrary
 
     using Google.Apis.Auth.OAuth2;
     using Google.Cloud.Firestore;
-    using Google.Cloud.Firestore.V1Beta1;
+    using Google.Cloud.Firestore.V1;
 
     using Grpc.Auth;
     using Grpc.Core;
@@ -45,10 +45,7 @@ namespace BusinessLogicWPF.GoogleCloudFireStoreLibrary
         /// <param name="jsonPath">
         /// The JSON path.
         /// </param>
-        /// <param name="databaseId">
-        /// The database id.
-        /// </param>
-        public ConnectFireStore([NotNull] string projectId, [NotNull] string jsonPath, [NotNull] string databaseId = "(default)")
+        public ConnectFireStore([NotNull] string projectId, [NotNull] string jsonPath)
         {
             var googleCredential = GoogleCredential.FromFile(jsonPath);
             var channel = new Channel(
@@ -57,8 +54,16 @@ namespace BusinessLogicWPF.GoogleCloudFireStoreLibrary
                 googleCredential.ToChannelCredentials());
             var fireStoreClient = FirestoreClient.Create(channel);
 
-            fireStoreDb = FirestoreDb.Create(projectId, databaseId, fireStoreClient);
+            fireStoreDb = FirestoreDb.Create(projectId, fireStoreClient);
         }
+
+        /// <summary>
+        /// The get fire-store database.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="FirestoreDb"/>.
+        /// </returns>
+        public FirestoreDb GetFirestoreDb() => fireStoreDb ?? throw new NullReferenceException();
 
         /// <summary>
         /// The string array to string.
