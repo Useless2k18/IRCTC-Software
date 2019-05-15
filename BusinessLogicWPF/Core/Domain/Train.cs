@@ -78,6 +78,20 @@ namespace BusinessLogicWPF.Core.Domain
         public string RakeZone { get; set; }
 
         /// <summary>
+        /// Gets or sets the running days.
+        /// </summary>
+        [CanBeNull]
+        [FirestoreProperty("runningDays")]
+        public List<string> RunningDays { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether TTE allocated or not.
+        /// </summary>
+        [CanBeNull]
+        [FirestoreProperty("tteAllocatedStatus")]
+        public bool TteAllocatedStatus { get; set; }
+
+        /// <summary>
         /// Gets or sets the route.
         /// </summary>
         [CanBeNull]
