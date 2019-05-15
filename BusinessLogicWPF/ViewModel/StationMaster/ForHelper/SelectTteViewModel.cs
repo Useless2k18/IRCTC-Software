@@ -93,6 +93,8 @@ namespace BusinessLogicWPF.ViewModel.StationMaster.ForHelper
             this.Date = DateTime.Now;
             this.Time = DateTime.Now;
             DataHelper.Train = train ?? throw new ArgumentNullException(nameof(train));
+            this.SourceStation = train.SourceStation;
+            this.DestinationStation = train.DestinationStation;
             this.ClearCommand = new SimpleCommand<object, object>(this.CanExecuteClearCommand, this.ExecuteClearCommand);
         }
 
@@ -328,13 +330,8 @@ namespace BusinessLogicWPF.ViewModel.StationMaster.ForHelper
         /// <returns>
         /// The <see cref="bool"/>.
         /// </returns>
-        private bool CanExecuteClearCommand([NotNull] object args)
+        private bool CanExecuteClearCommand([CanBeNull] object args)
         {
-            if (args == null)
-            {
-                throw new ArgumentNullException(nameof(args));
-            }
-
             return true;
         }
     }
