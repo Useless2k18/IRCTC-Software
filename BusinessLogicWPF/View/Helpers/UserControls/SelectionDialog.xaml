@@ -11,8 +11,6 @@
     xmlns:typeconverter="clr-namespace:BusinessLogicWPF.TypeConverters"
     xmlns:viewmodel1="clr-namespace:BusinessLogicWPF.ViewModel.StationMaster.ForHelper"
     xmlns:viewmodel2="clr-namespace:BusinessLogicWPF.ViewModel.Admin.ForHelpers"
-    MinWidth="400"
-    MaxHeight="600"
     UseLayoutRounding="True"
     mc:Ignorable="d">
 
