@@ -11,6 +11,7 @@
 namespace BusinessLogicWPF.View.LoginAndRegister.UserControls
 {
     using System;
+    using System.Text.RegularExpressions;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
@@ -19,7 +20,10 @@ namespace BusinessLogicWPF.View.LoginAndRegister.UserControls
     using System.Windows.Media;
     using System.Windows.Threading;
 
+    using BusinessLogicWPF.Core.Domain;
+    using BusinessLogicWPF.Helper;
     using BusinessLogicWPF.Properties;
+    using BusinessLogicWPF.View.StationMaster.Window;
 
     using Window = System.Windows.Window;
 
@@ -33,6 +37,11 @@ namespace BusinessLogicWPF.View.LoginAndRegister.UserControls
         /// </summary>
         [NotNull]
         private readonly Window window;
+
+        /// <summary>
+        /// The station master.
+        /// </summary>
+        private StationMaster stationMaster;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginAsStationMaster"/> class.
@@ -70,17 +79,25 @@ namespace BusinessLogicWPF.View.LoginAndRegister.UserControls
                 throw new ArgumentNullException(nameof(e));
             }
 
-            // Code waiting for DbContext
-
-            /*if (_stationMasterDetails.Password == TextPassword.Password)
+            if (this.stationMaster != null)
             {
-                var window = new StationMasterWindow();
-                _window.Hide();
-                window.ShowDialog();
-                _window.Show();
+                if (this.stationMaster.Password == this.TextPassword.Password)
+                {
+                    ModelPasser.StationMaster = this.stationMaster;
+                    var stationMasterWindow = new StationMasterWindow();
+                    this.window.Hide();
+                    stationMasterWindow.ShowDialog();
+                    this.window.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Wrong Password");
+                }
             }
             else
-                MessageBox.Show("Invalid Password");*/
+            {
+                MessageBox.Show("Wrong details entered!");
+            }
         }
 
         #region Input Fields
@@ -127,46 +144,44 @@ namespace BusinessLogicWPF.View.LoginAndRegister.UserControls
                 return;
             }
 
-            await Task.Factory.StartNew(() =>
-                {
-                    string text = null;
+            await Task.Factory.StartNew(
+                () =>
+                    {
+                        string text = null;
 
-                    Application.Current.Dispatcher.Invoke(
-                        DispatcherPriority.Normal,
-                        (ThreadStart)delegate { text = this.TextUserName.Text; });
+                        Application.Current.Dispatcher.Invoke(
+                            DispatcherPriority.Normal,
+                            (ThreadStart)(() => text = this.TextUserName.Text));
 
-                    /*var context = new RailwayDbContext();
-
-                _stationMasterDetails = context.StationMasters
-                    .FirstOrDefault(a => a.Id == text);
-
-                if (_stationMasterDetails != null)
-                {
-                    Dispatcher.BeginInvoke(
-                        DispatcherPriority.Normal,
-                        new Action(() =>
+                        if (Regex.IsMatch(text, "^0205"))
                         {
-                            UsernameAlert.Kind = PackIconKind.SmileyCool;
-                            UsernameAlert.Foreground = new SolidColorBrush(Colors.Green);
-                            UsernameAlert.ToolTip = "Hello " + _stationMasterDetails.FullName;
-                            UsernameAlert.Visibility = Visibility.Visible;
-                            ButtonLogin.IsEnabled = true;
-                        }));
-                }
-                else
-                {
-                    Dispatcher.BeginInvoke(
-                        DispatcherPriority.Normal,
-                        new Action(() =>
-                        {
-                            UsernameAlert.Kind = PackIconKind.SmileySad;
-                            UsernameAlert.Foreground = new SolidColorBrush(Colors.OrangeRed);
-                            UsernameAlert.ToolTip = "Sorry, Username not available";
-                            UsernameAlert.Visibility = Visibility.Visible;
-                            ButtonLogin.IsEnabled = false;
-                        }));
-                }*/
-                }).ConfigureAwait(true);
+                            var zoneIndex = Convert.ToInt32(text.Substring(4, 2));
+                            var divisionIndex = Convert.ToInt32(text.Substring(6, 2));
+
+                            var zone = DataHelper.ZoneAndDivisionModel.ZoneList[zoneIndex];
+                            var division = DataHelper.ZoneAndDivisionModel.DivisionList[zone][divisionIndex];
+
+                            if (StaticDbContext.ConnectFireStore.FindDocument(
+                                text,
+                                "Root",
+                                "Employee",
+                                zone,
+                                division,
+                                "StationMaster"))
+                            {
+                                this.stationMaster =
+                                    StaticDbContext.ConnectFireStore.GetCollectionFields<StationMaster>(
+                                        "Root",
+                                        "Employee",
+                                        zone,
+                                        division,
+                                        "StationMaster",
+                                        text);
+                            }
+                        }
+
+                        Application.Current.Dispatcher.Invoke(() => { this.ButtonLogin.IsEnabled = true; });
+                    }).ConfigureAwait(true);
         }
 
         /// <summary>
@@ -185,6 +200,7 @@ namespace BusinessLogicWPF.View.LoginAndRegister.UserControls
                 this.LabelPasswordEmptyError.Foreground = new SolidColorBrush(Colors.OrangeRed);
                 this.LabelPasswordEmptyError.Visibility = Visibility.Visible;
                 this.TextPassword.BorderBrush = new SolidColorBrush(Colors.OrangeRed);
+                this.ButtonLogin.IsEnabled = false;
             }
             else
             {
@@ -217,6 +233,10 @@ namespace BusinessLogicWPF.View.LoginAndRegister.UserControls
             if (this.TextPassword.Password.Length != 0)
             {
                 this.LabelPasswordEmptyError.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                this.ButtonLogin.IsEnabled = false;
             }
         }
 
