@@ -10,13 +10,13 @@
 namespace BusinessLogicWPF.ViewModel.StationMaster
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Runtime.CompilerServices;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     using BusinessLogicWPF.Core.Domain;
-    using BusinessLogicWPF.GoogleCloudFireStoreLibrary;
     using BusinessLogicWPF.Helper;
     using BusinessLogicWPF.Properties;
 
@@ -31,8 +31,8 @@ namespace BusinessLogicWPF.ViewModel.StationMaster
         public AllocateTteViewModel()
         {
             this.Items1 = CreateData();
-            this.Items2 = CreateData();
-            this.Items3 = CreateData();
+            /*this.Items2 = CreateData();
+            this.Items3 = CreateData();*/
         }
 
         /// <summary>
@@ -59,15 +59,6 @@ namespace BusinessLogicWPF.ViewModel.StationMaster
         public ObservableCollection<Train> Items3 { get; }
 
         /// <summary>
-        /// The on property changed.
-        /// </summary>
-        /// <param name="propertyName">
-        /// The property name.
-        /// </param>
-        protected virtual void OnPropertyChanged([CallerMemberName] [CanBeNull] string propertyName = null) =>
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        /// <summary>
         /// The create data.
         /// </summary>
         /// <returns>
@@ -76,24 +67,46 @@ namespace BusinessLogicWPF.ViewModel.StationMaster
         [CanBeNull]
         private static ObservableCollection<Train> CreateData()
         {
-            // Google Cloud Platform project ID.
-            const string ProjectId = "ticketchecker-d4f79";
+            var trains = new List<Train>();
+            //SomeBackgroundTasks().ConfigureAwait(false);
+            Task.Run(
+                async () =>
+                    {
+                        var db = StaticDbContext.ConnectFireStore?.GetFirestoreDb();
 
-            try
-            {
-                StaticDbContext.ConnectFireStore = new ConnectFireStore(ProjectId, @"TicketChecker-1f6bf5c2db0a.json");
-            }
-            catch (Exception exception)
-            {
-                Debug.WriteLine(exception.Message);
-            }
+                        var collections = db?.Collection("DynamicRoot/TrainDetails/RunningTrains");
 
-            var observableCollectionOfTrain = new ObservableCollection<Train>(
-                StaticDbContext.ConnectFireStore?.GetAllDocumentData<Train>("ROOT", "TRAIN_DETAILS", "12073")
-                ?? throw new InvalidOperationException());
+                        var query = collections?.WhereEqualTo("tteAllocatedStatus", false);
+
+                        var listener = query?.Listen(
+                            snapshot2 => trains.AddRange(
+                                snapshot2.Documents.Where(snapshotDocument => snapshotDocument.Exists)
+                                    .Select(snapshotDocument => snapshotDocument.ConvertTo<Train>())));
+
+                        var snapshot = await query?.GetSnapshotAsync();
+
+                        trains.AddRange(
+                            snapshot.Documents.Where(snapshotDocument => snapshotDocument.Exists)
+                                .Select(snapshotDocument => snapshotDocument.ConvertTo<Train>()));
+                    }).Wait();
+
+            var observableCollectionOfTrain = new ObservableCollection<Train>(trains);
 
             return observableCollectionOfTrain;
         }
+
+        /*private static async Task<List<Train>> SomeBackgroundTasks()
+        {
+            var db = StaticDbContext.ConnectFireStore?.GetFirestoreDb();
+
+            var collections = db?.Collection("DynamicRoot/TrainDetails/RunningTrains");
+
+            var query = collections?.WhereEqualTo("tteAllocatedStatus", false);
+            var snapshot = await query?.GetSnapshotAsync();
+
+            return snapshot?.Documents.Where(documentSnapshot => documentSnapshot.Exists)
+                .Select(documentSnapshot => documentSnapshot.ConvertTo<Train>()).ToList();
+        }*/
 
         /// <summary>
         /// The raise property changed.

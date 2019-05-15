@@ -28,17 +28,17 @@
             HorizontalContentAlignment="Stretch"
             materialDesign:DataGridAssist.CellPadding="15 10 0 10"
             materialDesign:DataGridAssist.ColumnHeaderPadding="10"
-            ItemsSource="{Binding Items3}">
+            ItemsSource="{Binding Items1}">
 
             <ListView.View>
                 <GridView>
                     <GridViewColumn DisplayMemberBinding="{Binding TrainNumber}" Header="Train No." />
 
-                    <GridViewColumn DisplayMemberBinding="{Binding NAME}" Header="Train Name" />
+                    <GridViewColumn DisplayMemberBinding="{Binding TrainName}" Header="Train Name" />
 
-                    <GridViewColumn DisplayMemberBinding="{Binding SRC_STN}" Header="Source Station" />
+                    <GridViewColumn DisplayMemberBinding="{Binding SourceStation}" Header="Source Station" />
 
-                    <GridViewColumn DisplayMemberBinding="{Binding DEST_STN}" Header="Destination Station" />
+                    <GridViewColumn DisplayMemberBinding="{Binding DestinationStation}" Header="Destination Station" />
 
                     <GridViewColumn Header="Assign">
 
@@ -47,7 +47,7 @@
                                 <materialDesign:Badged Badge="{materialDesign:PackIcon WarningCircle}" BadgeColorZoneMode="Accent">
                                     <Button
                                         x:Name="ButtonAssign"
-                                        Click="ButtonAssign_OnClick"
+                                        Click="ButtonAssignOnClick"
                                         Style="{StaticResource MaterialDesignRaisedLightButton}">
                                         Assign
                                     </Button>

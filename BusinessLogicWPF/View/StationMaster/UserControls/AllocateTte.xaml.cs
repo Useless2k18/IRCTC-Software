@@ -39,11 +39,11 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls
         public AllocateTte()
         {
             this.InitializeComponent();
-            this.DataContext = new AllocateTteViewModel();
+            // this.DataContext = new AllocateTteViewModel();
         }
 
         /// <summary>
-        /// The button assign_ on click.
+        /// The button assign on click.
         /// </summary>
         /// <param name="sender">
         /// The sender.
@@ -51,7 +51,7 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls
         /// <param name="e">
         /// The e.
         /// </param>
-        private async void ButtonAssign_OnClick([NotNull] object sender, [NotNull] RoutedEventArgs e)
+        private async void ButtonAssignOnClick([NotNull] object sender, [NotNull] RoutedEventArgs e)
         {
             if (sender == null)
             {
