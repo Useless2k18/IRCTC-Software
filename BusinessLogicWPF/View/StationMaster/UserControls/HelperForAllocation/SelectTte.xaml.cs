@@ -42,6 +42,16 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
         private static List<Station> stations = new List<Station>();
 
         /// <summary>
+        /// The source stations.
+        /// </summary>
+        private readonly List<Station> sourceStations;
+
+        /// <summary>
+        /// The destination stations.
+        /// </summary>
+        private List<Station> destinationStations = new List<Station>();
+
+        /// <summary>
         /// The background worker.
         /// </summary>
         [NotNull]
@@ -66,6 +76,14 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
             this.DatePickerDestination.BlackoutDates.AddDatesInPast();
             this.DatePickerSource.DisplayDateEnd =
                 this.DatePickerDestination.DisplayDateEnd = DateTime.Now.AddMonths(3);
+
+            if (DataHelper.StationsList != null)
+            {
+                this.sourceStations = DataHelper.StationsList.Stations.Values.ToList();
+            }
+
+            this.ComboBoxSource.ItemsSource = this.sourceStations;
+            this.ComboBoxDestination.ItemsSource = this.sourceStations;
 
             if (this.backgroundWorker.IsBusy)
             {
@@ -180,18 +198,6 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
                         this.ComboBoxTteId.Items.Add(tte.TT_ID);
                         this.ComboBoxTteName.Items.Add(tte.FullName);
                     }
-                }
-
-                foreach (var station in stations)
-                {
-                    this.ComboBoxSource.Items.Add(station.STN_NAME);
-                    this.ComboBoxDestination.Items.Add(station.STN_NAME);
-
-                    if (DataHelper.Train != null && station.STN_CODE?.Contains(
-                            DataHelper.Train.destinationStation ?? throw new InvalidOperationException()) == true)
-                    {
-                        this.ComboBoxSource.Items.Remove(station);
-                    }
                 }*/
             }
 
@@ -279,14 +285,14 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
                 throw new ArgumentNullException(nameof(e));
             }
 
-            var selectedItem = this.ComboBoxSource.SelectedItem;
-            this.ComboBoxDestination.Items.Remove(selectedItem);
-
-            //// Stations.Remove(selectedItem.ToString());
-            if (this.ComboBoxSource.SelectedItem != null)
-            {
-                this.ComboBoxDestination.IsEnabled = true;
-            }
+            this.ComboBoxDestination.SelectedIndex = -1;
+            var combo1 = this.ComboBoxSource.SelectedValue as string;
+            this.destinationStations.Clear();
+            this.destinationStations.AddRange(this.sourceStations);
+            this.destinationStations.Remove(this.destinationStations.Find(d => d.StationCode == combo1));
+            this.ComboBoxDestination.ItemsSource = null;
+            this.ComboBoxDestination.ItemsSource = this.destinationStations;
+            this.ComboBoxDestination.IsEnabled = true;
         }
 
         /// <summary>

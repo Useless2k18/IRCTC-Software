@@ -97,7 +97,8 @@
             <ComboBox
                 x:Name="ComboBoxSource"
                 ItemsSource="{Binding}"
-                IsEnabled="False"
+                DisplayMemberPath="StationName"
+                SelectedValuePath="StationCode"
                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                 materialDesign:HintAssist.Hint="Select Source Station"
                 Text="{Binding Path=SourceStation}"
@@ -141,7 +142,9 @@
             <ComboBox
                 x:Name="ComboBoxDestination"
                 ItemsSource="{Binding}"
-                IsEnabled="{Binding}"
+                IsEnabled="False"
+                DisplayMemberPath="StationName"
+                SelectedValuePath="StationCode"
                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                 SelectionChanged="ComboBoxDestination_OnSelectionChanged"
                 materialDesign:HintAssist.Hint="Select Destination Station"
