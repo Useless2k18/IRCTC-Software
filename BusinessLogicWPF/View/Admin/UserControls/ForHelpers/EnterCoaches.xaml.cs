@@ -84,54 +84,62 @@ namespace BusinessLogicWPF.View.Admin.UserControls.ForHelpers
                 }
             }
 
-            this.AddNewTextBox(true);
+            if (Regex.IsMatch(this.TextBox1.Text, @"^\w+\d+\-\d+"))
+            {
+                // var text = $"{new string(findOldTextBox.Text.Where(char.IsDigit).ToArray())}";
+                // var resultString = Regex.Match(findOldTextBox.Text, @"\d+").Value;
+                var resultString = string.Join(
+                    " ",
+                    Regex.Matches(this.TextBox1.Text, @"\d+").OfType<Match>().Select(m => m.Value));
+                var resultStringArray = resultString.Split(' ');
+
+                var starting = Convert.ToInt32(resultStringArray[0]);
+                var ending = Convert.ToInt32(resultStringArray[1]);
+
+                this.AddNewTextBox(starting, ending);
+            }
+            else
+            {
+                this.AddNewTextBox();
+            }
 
             // Update Static class DataHelper
             DataHelper.StatusForEnable = false;
         }
 
-        private void AddNewTextBox(bool newFlag = false)
+        private void AddNewTextBox(int starting = 1, int ending = 1)
         {
-            var textBox = new TextBox
-                              {
-                                  Name = "TextBox" + ++this.counter, 
-                                  Margin = new Thickness(10, 10, 10, 10),
-                                  CharacterCasing = CharacterCasing.Upper
-                              };
-
-            // Material Design Properties
-            HintAssist.SetHint(textBox, "Enter Coach Number");
-            HintAssist.SetIsFloating(textBox, true);
-
-            if (newFlag)
+            for (int i = starting; i <= ending; i++)
             {
-                if (this.counter != 0)
+                var textBox = new TextBox
+                                  {
+                                      Name = "TextBox" + ++this.counter, 
+                                      Margin = new Thickness(10, 10, 10, 10),
+                                      CharacterCasing = CharacterCasing.Upper
+                                  };
+
+                // Material Design Properties
+                HintAssist.SetHint(textBox, "Enter Coach Number");
+                HintAssist.SetIsFloating(textBox, true);
+
+                var s = "TextBox" + (this.counter - 1);
+
+                var findOldTextBox = ExtendedVisualTreeHelper.FindChild<TextBox>(this.StackPanel, s);
+
+                if (string.IsNullOrWhiteSpace(findOldTextBox?.Text))
                 {
-                    var s = "TextBox" + (this.counter - 1);
-
-                    var findOldTextBox = ExtendedVisualTreeHelper.FindChild<TextBox>(this.StackPanel, s);
-
-                    if (string.IsNullOrWhiteSpace(findOldTextBox?.Text))
-                    {
-                        return;
-                    }
-
-                    var newTextBoxText = $"{new string(findOldTextBox.Text.TakeWhile(char.IsLetter).ToArray())}{this.counter}";
-                    textBox.Text = newTextBoxText;
-
-                    // var text = $"{new string(findOldTextBox.Text.Where(char.IsDigit).ToArray())}";
-                    // var resultString = Regex.Match(findOldTextBox.Text, @"\d+").Value;
-                    var resultString = string.Join(
-                        " ",
-                        Regex.Matches(findOldTextBox.Text, @"\d+").OfType<Match>().Select(m => m.Value));
-                    var resultStringArray = resultString.Split(' ');
+                    return;
                 }
+
+                var newTextBoxText = Regex.IsMatch(findOldTextBox.Text, @"^\w+\d+\-\d+")
+                                         ? $"{new string(findOldTextBox.Text.TakeWhile(char.IsLetter).ToArray())}{i}"
+                                         : $"{new string(findOldTextBox.Text.TakeWhile(char.IsLetter).ToArray())}{Math.Max(this.counter, i)}";
+
+                textBox.Text = newTextBoxText;
+                this.ScrollViewer.ScrollToEnd();
+
+                this.StackPanel.Children.Add(textBox);
             }
-
-            // Update ScrollViewer
-            this.ScrollViewer.ScrollToEnd();
-
-            this.StackPanel.Children.Add(textBox);
         }
 
         /// <summary>

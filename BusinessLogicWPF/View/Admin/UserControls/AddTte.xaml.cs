@@ -23,6 +23,8 @@ namespace BusinessLogicWPF.View.Admin.UserControls
     using BusinessLogicWPF.Model;
     using BusinessLogicWPF.Properties;
 
+    using Google.Cloud.Firestore;
+
     using MahApps.Metro.Controls;
 
     using MaterialDesignThemes.Wpf;
@@ -215,7 +217,7 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                          $"{(int)EnumEmployeeType.Tte:D2}" + 
                          $"{DataHelper.ZoneAndDivisionModel.ZoneList.IndexOf(tte.Zone):D2}" + 
                          $"{DataHelper.ZoneAndDivisionModel.DivisionList[tte.Zone].IndexOf(tte.Division):D2}" + 
-                         $"{(max + 1):D7}";
+                         $"{max + 1:D7}";
 
             tte.Id = this.tteId;
 
@@ -279,5 +281,24 @@ namespace BusinessLogicWPF.View.Admin.UserControls
 
             ErrorLabelHelper.Reset();
         }
+    }
+
+    [FirestoreData]
+    public class City
+    {
+        [FirestoreProperty]
+        public string Name { get; set; }
+
+        [FirestoreProperty]
+        public string State { get; set; }
+
+        [FirestoreProperty]
+        public string Country { get; set; }
+
+        [FirestoreProperty("Capital")]
+        public bool IsCapital { get; set; }
+
+        [FirestoreProperty]
+        public long Population { get; set; }
     }
 }
