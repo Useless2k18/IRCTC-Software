@@ -12,6 +12,7 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Linq;
     using System.Windows;
     using System.Windows.Controls;
@@ -36,15 +37,9 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
         private static bool status;
 
         /// <summary>
-        /// The stations.
-        /// </summary>
-        [NotNull]
-        private static List<Station> stations = new List<Station>();
-
-        /// <summary>
         /// The source stations.
         /// </summary>
-        private readonly List<Station> sourceStations;
+        private readonly List<Station> sourceStations = new List<Station>();
 
         /// <summary>
         /// The destination stations.
@@ -77,9 +72,19 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
             this.DatePickerSource.DisplayDateEnd =
                 this.DatePickerDestination.DisplayDateEnd = DateTime.Now.AddMonths(3);
 
-            if (DataHelper.StationsList != null)
+            if (DataHelper.StationsList != null && DataHelper.Train != null)
             {
-                this.sourceStations = DataHelper.StationsList.Stations.Values.ToList();
+                var stationCodes = new List<string>();
+
+                foreach (var route in DataHelper.Train.Route)
+                {
+                    stationCodes.Add(route.StationCode);
+                }
+
+                foreach (var stationCode in stationCodes)
+                {
+                    this.sourceStations.Add(DataHelper.StationsList.Stations[stationCode]);
+                }
             }
 
             this.ComboBoxSource.ItemsSource = this.sourceStations;
@@ -141,16 +146,17 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
                 DispatcherPriority.Normal,
                 new Action(() => this.ProgressBar.Visibility = Visibility.Visible));
 
-            /*if (StaticDbContext.ConnectFireStore != null)
+            if (StaticDbContext.ConnectFireStore != null && ModelPasser.StationMaster != null)
             {
-                stations = StaticDbContext.ConnectFireStore.GetAllDocumentData<Station>(
-                               "ROOT",
-                               "STATIONS",
-                               "STN_DETAILS") ?? throw new InvalidOperationException();
-                Ttes = StaticDbContext.ConnectFireStore.GetAllDocumentData<Tte>("ROOT", "TT_DETAILS", "TT");
-                this.Trains =
-                    StaticDbContext.ConnectFireStore.GetAllDocumentData<Train>("ROOT", "TRAIN_DETAILS", "12073");
-            }*/
+                Ttes = StaticDbContext.ConnectFireStore.GetAllDocumentData<Tte>(
+                    "Root",
+                    "Employee",
+                    ModelPasser.StationMaster.Zone,
+                    ModelPasser.StationMaster.Division,
+                    "Tte");
+                /*this.Trains =
+                    StaticDbContext.ConnectFireStore.GetAllDocumentData<Train>("ROOT", "TRAIN_DETAILS", "12073");*/
+            }
 
             /*var d = Trains[0].ROUTE.TryGetValue("1", out var value);
             if (value != null) MessageBox.Show(value.STN_CODE);*/
@@ -191,14 +197,14 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
             {
                 this.ComboBoxSource.IsEnabled = this.ComboBoxTteId.IsEnabled = this.ComboBoxTteName.IsEnabled = true;
 
-                /*if (Ttes != null)
+                if (Ttes != null)
                 {
                     foreach (var tte in Ttes)
                     {
-                        this.ComboBoxTteId.Items.Add(tte.TT_ID);
-                        this.ComboBoxTteName.Items.Add(tte.FullName);
+                        this.ComboBoxTteId.Items.Add(tte.Id);
+                        this.ComboBoxTteName.Items.Add(tte.Name);
                     }
-                }*/
+                }
             }
 
             this.ProgressBar.Visibility = Visibility.Collapsed;
@@ -228,11 +234,11 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
                 throw new ArgumentNullException(nameof(e));
             }
 
-            /*if (this.ComboBoxTteId.SelectedItem != null)
+            if (this.ComboBoxTteId.SelectedItem != null)
             {
-                this.ComboBoxTteName.SelectedItem =
-                    (Ttes ?? throw new InvalidOperationException()).FirstOrDefault(t => t.TT_ID == this.ComboBoxTteId.SelectedItem as string)?.FullName;
-            }*/
+                this.ComboBoxTteName.SelectedItem = (Ttes ?? throw new InvalidOperationException())
+                    .FirstOrDefault(t => t.Id == this.ComboBoxTteId.SelectedItem as string)?.Name;
+            }
         }
 
         /// <summary>
@@ -256,12 +262,11 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
                 throw new ArgumentNullException(nameof(e));
             }
 
-            /*if (this.ComboBoxTteName.SelectedItem != null)
+            if (this.ComboBoxTteName.SelectedItem != null)
             {
-                this.ComboBoxTteId.SelectedItem =
-                    (Ttes ?? throw new InvalidOperationException())
-                    .FirstOrDefault(t => t.FullName == this.ComboBoxTteName.SelectedItem as string)?.TT_ID;
-            }*/
+                this.ComboBoxTteId.SelectedItem = (Ttes ?? throw new InvalidOperationException())
+                    .FirstOrDefault(t => t.Name == this.ComboBoxTteName.SelectedItem as string)?.Id;
+            }
         }
 
         /// <summary>
@@ -293,6 +298,12 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
             this.ComboBoxDestination.ItemsSource = null;
             this.ComboBoxDestination.ItemsSource = this.destinationStations;
             this.ComboBoxDestination.IsEnabled = true;
+
+            if (combo1 == DataHelper.Train.SourceStation)
+            {
+                this.DatePickerSource.SelectedDate = DateTime.Now;
+                this.TimePickerSource.SelectedTime = Convert.ToDateTime(DataHelper.Train.Route[0].DepartureTime);
+            }
         }
 
         /// <summary>
@@ -304,7 +315,7 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
         /// <param name="e">
         /// The e.
         /// </param>
-        private void ComboBoxDestination_OnSelectionChanged(
+        private void ComboBoxDestinationOnSelectionChanged(
             [NotNull] object sender,
             [NotNull] SelectionChangedEventArgs e)
         {
@@ -328,9 +339,9 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
             {
                 var destinationStation = DataHelper.Train.DestinationStation;
 
-                /*status = this.ComboBoxDestination.SelectedItem.ToString().Contains(
-                    stations.FirstOrDefault(s => s.STN_CODE == destinationStation)?.STN_NAME
-                    ?? throw new InvalidOperationException());*/
+                status = this.ComboBoxDestination.SelectedItem.ToString().Contains(
+                    this.destinationStations.FirstOrDefault(s => s.StationCode == destinationStation)?.StationName
+                    ?? throw new InvalidOperationException());
             }
         }
 
@@ -387,13 +398,13 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
 
             // Here TimeSpan.FromDays() is used for not black-outing selected date
             // (as train journey may be of 24 hours 😅) 
-            if (this.DatePickerSource.SelectedDate != null)
+            /*if (this.DatePickerSource.SelectedDate != null)
             {
                 this.DatePickerDestination.BlackoutDates.Add(
                     new CalendarDateRange(
                         DateTime.Now,
                         this.DatePickerSource.SelectedDate.Value - TimeSpan.FromDays(1)));
-            }
+            }*/
         }
 
         /// <summary>
@@ -516,6 +527,12 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
                 throw new ArgumentNullException(nameof(e));
             }
 
+            if (MessageBox.Show("Are you sure to assign this TTE?", "Alert", MessageBoxButton.YesNo)
+                == MessageBoxResult.No)
+            {
+                return;
+            }
+
             var id = this.FindChildren<ComboBox>().Count(comboBox => !string.IsNullOrWhiteSpace(comboBox.Text));
 
             id += this.FindChildren<DatePicker>().Count(datePicker => !string.IsNullOrWhiteSpace(datePicker.Text));
@@ -531,6 +548,32 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
             }
             else
             {
+                #region Database Addition logic
+
+                var assignTte = new AssignTte
+                                    {
+                                        TteDetails =
+                                            new Tte { Id = this.ComboBoxTteId.Text, Name = this.ComboBoxTteName.Text },
+                                        SourceStation = ((Station)this.ComboBoxSource.SelectedItem)?.StationCode,
+                                        SourceDateTime = $"{this.DatePickerSource.Text} {this.TimePickerSource.Text}",
+                                        DestinationStation =
+                                            ((Station)this.ComboBoxDestination.SelectedItem)?.StationCode,
+                                        DestinationDateTime = $"{this.DatePickerDestination.Text} {this.TimePickerDestination.Text}"
+                                    };
+
+                StaticDbContext.ConnectFireStore?.AddOrUpdateCollectionDataAsync(
+                    assignTte,
+                    "DynamicRoot",
+                    "TrainDetails",
+                    "RunningTrains",
+                    DataHelper.Train?.TrainNumber.ToString(),
+                    "AssignedTtes",
+                    this.ComboBoxTteId.Text);
+
+                MessageBox.Show("TTE successfully assigned!");
+
+                #endregion
+                
                 if (status)
                 {
                     DataHelper.StatusForEnable = true;
@@ -546,16 +589,16 @@ namespace BusinessLogicWPF.View.StationMaster.UserControls.HelperForAllocation
 
                 if (DataHelper.Train != null)
                 {
-                    /*DataHelper.Train.sourceStation =
-                        stations.FirstOrDefault(s => s.STN_NAME == this.ComboBoxDestination.Text)?.STN_CODE;*/
+                    /*DataHelper.Train.SourceStation =
+                        this.sourceStations.FirstOrDefault(s => s.StationName == this.ComboBoxDestination.Text)?.StationCode;*/
 
                     this.DataContext = new SelectTteViewModel(DataHelper.Train);
                     this.TextBlockWelcome.Text = "Add another TTE Details";
 
-                    /*this.ComboBoxSource.SelectedItem = stations.FirstOrDefault(
-                            s => s.STN_CODE?.Contains(
-                                     DataHelper.Train.sourceStation ?? throw new InvalidOperationException()) == true)
-                        ?.STN_NAME;*/
+                    /*this.ComboBoxSource.SelectedItem = this.sourceStations.FirstOrDefault(
+                            s => s.StationCode?.Contains(
+                                     DataHelper.Train.SourceStation ?? throw new InvalidOperationException()) == true)
+                        ?.StationName;*/
                 }
 
                 // Waiting for disabling again

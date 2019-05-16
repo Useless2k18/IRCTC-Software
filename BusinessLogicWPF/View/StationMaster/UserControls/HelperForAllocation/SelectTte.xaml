@@ -146,7 +146,7 @@
                 DisplayMemberPath="StationName"
                 SelectedValuePath="StationCode"
                 Style="{StaticResource MaterialDesignFloatingHintComboBox}"
-                SelectionChanged="ComboBoxDestination_OnSelectionChanged"
+                SelectionChanged="ComboBoxDestinationOnSelectionChanged"
                 materialDesign:HintAssist.Hint="Select Destination Station"
                 Text="{Binding Path=DestinationStation, Mode=TwoWay}"
                 Margin="10">
