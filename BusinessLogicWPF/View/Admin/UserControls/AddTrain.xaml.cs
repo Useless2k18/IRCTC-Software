@@ -57,7 +57,10 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                                                      "Third Tier AC",
                                                      "Sleeper",
                                                      "Chair Car",
-                                                     "Second Sitting"
+                                                     "Second Sitting",
+                                                     "Executive Chair Car",
+                                                     "Third AC Economy",
+                                                     "Anubhuti Class"
                                                  };
 
         /// <summary>
@@ -424,6 +427,9 @@ namespace BusinessLogicWPF.View.Admin.UserControls
             var sleeper = new List<string>();
             var chairCar = new List<string>();
             var secondSitting = new List<string>();
+            var executiveChairCar = new List<string>();
+            var thirdAcEconomy = new List<string>();
+            var anubhutiClass = new List<string>();
 
             foreach (var item in c.Items)
             {
@@ -479,6 +485,34 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                             }
 
                             break;
+
+                        case "Executive Chair Car":
+                            coachType.Add("executiveChairCar");
+                            foreach (var itemItem in item.Items)
+                            {
+                                executiveChairCar.Add(itemItem.Name);
+                            }
+
+                            break;
+
+                        case "Third AC Economy":
+                            coachType.Add("thirdAcEconomy");
+                            foreach (var itemItem in item.Items)
+                            {
+                                thirdAcEconomy.Add(itemItem.Name);
+                            }
+
+                            break;
+
+                        case "Anubhuti Class":
+                            coachType.Add("anubhutiClass");
+                            foreach (var itemItem in item.Items)
+                            {
+                                anubhutiClass.Add(itemItem.Name);
+                            }
+
+                            break;
+
                         default:
                             break;
                     }
@@ -506,6 +540,15 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                             break;
                         case "Second Sitting":
                             secondSitting.Add("NA");
+                            break;
+                        case "Executive Chair Car":
+                            executiveChairCar.Add("NA");
+                            break;
+                        case "Third AC Economy":
+                            thirdAcEconomy.Add("NA");
+                            break;
+                        case "Anubhuti Class":
+                            anubhutiClass.Add("NA");
                             break;
                         default:
                             break;
@@ -536,7 +579,10 @@ namespace BusinessLogicWPF.View.Admin.UserControls
                                                        ThirdTierAc = thirdTierAc,
                                                        Sleeper = sleeper,
                                                        ChairCar = chairCar,
-                                                       SecondSitting = secondSitting
+                                                       SecondSitting = secondSitting,
+                                                       ExecutiveChairCar = executiveChairCar,
+                                                       ThirdAcEconomy = thirdAcEconomy,
+                                                       AnubhutiClass = anubhutiClass
                                                    }
                                    };
 
