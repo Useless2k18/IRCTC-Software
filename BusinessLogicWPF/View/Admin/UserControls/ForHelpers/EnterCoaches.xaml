@@ -6,8 +6,8 @@
     xmlns:local="clr-namespace:BusinessLogicWPF.View.Admin.UserControls.ForHelpers"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    MinWidth="400"
-    MinHeight="200"
+    Width="Auto"
+    Height="Auto"
     mc:Ignorable="d"
     UseLayoutRounding="True">
 
