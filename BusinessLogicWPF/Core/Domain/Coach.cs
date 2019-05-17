@@ -71,5 +71,26 @@ namespace BusinessLogicWPF.Core.Domain
         [CanBeNull]
         [FirestoreProperty("secondSitting")]
         public List<string> SecondSitting { get; set; }
+
+        /// <summary>
+        /// Gets or sets the executive chair car.
+        /// </summary>
+        [CanBeNull]
+        [FirestoreProperty("executiveChairCar")]
+        public List<string> ExecutiveChairCar { get; set; }
+
+        /// <summary>
+        /// Gets or sets the third ac economy.
+        /// </summary>
+        [CanBeNull]
+        [FirestoreProperty("thirdAcEconomy")]
+        public List<string> ThirdAcEconomy { get; set; }
+
+        /// <summary>
+        /// Gets or sets the anubhuti class.
+        /// </summary>
+        [CanBeNull]
+        [FirestoreProperty("anubhutiClass")]
+        public List<string> AnubhutiClass { get; set; }
     }
 }
